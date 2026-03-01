@@ -51,13 +51,17 @@ export default function NavBar() {
       <p
         onMouseEnter={() => setIsIconShown(false)}
         onMouseLeave={() => setIsIconShown(true)}
+        className={styles.hi}
       >
-        Hi! I'm{" "}
-        {isIconShown ? (
-          <PiSunFill className={styles.wordplay} />
-        ) : (
-          <span className={styles.wordplay}>San</span>
-        )}
+        {" "}
+        <span className={styles.heightEnforcer}>
+          Hi! I'm{" "}
+          {isIconShown ? (
+            <PiSunFill className={styles.wordplay} />
+          ) : (
+            <span className={styles.wordplay}>San</span>
+          )}{" "}
+        </span>
         tana <br />
         and this is Whimsical Tech
       </p>
