@@ -10,6 +10,7 @@ type IconComponent = React.ElementType;
 type SkillRow = {
   title: string;
   keywords: string[];
+  color?: string;
   icon?: IconComponent;
 };
 
@@ -18,6 +19,7 @@ const skillData: SkillRow[] = [
     title: "React",
     keywords: ["Hooks", "Context", "Suspense", "Testing", "SSR"],
     icon: FaReact,
+    color: "#61DBFB",
   },
   {
     title: "Full‑stack development",
@@ -28,11 +30,13 @@ const skillData: SkillRow[] = [
     title: "JavaScript",
     keywords: ["ES2022", "TypeScript", "Async/Await", "Modules"],
     icon: IoLogoJavascript,
+    color: "#f0db4f",
   },
   {
     title: "HTML / CSS / Design",
     keywords: ["Tailwind", "SCSS", "BEM", "Accessibility", "Animations"],
     icon: FaCss3Alt,
+    color: "#DD3A0A",
   },
   {
     title: "Tooling",
@@ -52,13 +56,17 @@ export default function Skills() {
     <section className={styles.skills} id="skills">
       <h2 className={styles.heading}>Skills</h2>
       <div className={styles.table}>
-        {skillData.map(({ title, keywords, icon: Icon }) => {
+        {skillData.map(({ title, keywords, color, icon: Icon }) => {
           return (
             <div key={title} className={styles.row}>
               <div className={styles.title}>
                 {" "}
                 {Icon && (
-                  <Icon className={styles.icon} aria-hidden="true" />
+                  <Icon
+                    className={styles.icon}
+                    color={color}
+                    aria-hidden="true"
+                  />
                 )}{" "}
                 {title}
               </div>
