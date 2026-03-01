@@ -27,7 +27,7 @@
   --dark-green: #4c5c2d;
   --opaque-green: #6a7e3f;
   --forest-green: #237227;
-  --bright-orange: #ffaa00;
+  --bright-orange: #ff7f11 /*#ffaa00*/;
   --opaque-orange: #ffd786;
 }
 
@@ -38,7 +38,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #1b211a;
+    --background: #222222;
     --foreground: #fbf6f6;
   }
 }
@@ -58,4 +58,8 @@ body {
 
 .emphasis-bg {
   background-color: var(--emphasis);
+}
+
+.foreground {
+  color: var(--foreground);
 }

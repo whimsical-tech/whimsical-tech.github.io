@@ -9,7 +9,11 @@
 }
 
 .controls {
-  margin-bottom: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  z-index: 3;
 }
 
 .controls button {
@@ -21,9 +25,15 @@
   margin: 0 0.5rem;
 }
 
+.controls button:last-of-type {
+  right: 0;
+  position: absolute;
+}
+
 .slide {
   text-align: left;
-  max-width: 1000px;
+  color: var(--emphasis);
+  max-width: 970px;
   font-weight: 800;
   font-size: 3rem;
   font-style: normal;

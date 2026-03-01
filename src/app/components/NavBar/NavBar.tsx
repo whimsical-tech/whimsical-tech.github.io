@@ -1,0 +1,95 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import styles from "./NavBar.module.css";
+import { PiSunFill } from "react-icons/pi";
+
+/**
+ * Renders a sticky top navigation that scrolls smoothly to the
+ * corresponding page sections (Intro, Skills, Contact).
+ * The active link is highlighted based on the current scroll position.
+ */
+export default function NavBar() {
+  const [active, setActive] = useState<string>("intro");
+
+  // Update active link on scroll
+  useEffect(() => {
+    const sections = ["intro", "skills", "contact"];
+    const handler = () => {
+      const scrollY = window.scrollY;
+      let current = "intro";
+
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const offset = el.offsetTop - 80; // account for nav height
+          if (scrollY >= offset) current = id;
+        }
+      }
+      setActive(current);
+    };
+
+    window.addEventListener("scroll", handler, { passive: true });
+    handler(); // initialise on mount
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  // Smooth scroll helper
+  const scrollTo = (id: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const [isIconShown, setIsIconShown] = useState(true);
+
+  return (
+    <nav className={styles.nav}>
+      <p
+        onMouseEnter={() => setIsIconShown(false)}
+        onMouseLeave={() => setIsIconShown(true)}
+      >
+        Hi! I'm{" "}
+        {isIconShown ? (
+          <PiSunFill className={styles.wordplay} />
+        ) : (
+          <span className={styles.wordplay}>San</span>
+        )}
+        tana <br />
+        and this is Whimsical Tech
+      </p>
+      <ul className={styles.list}>
+        <li>
+          <a
+            href="#intro"
+            onClick={scrollTo("intro")}
+            className={active === "intro" ? styles.active : undefined}
+          >
+            Intro
+          </a>
+        </li>
+        <li>
+          <a
+            href="#skills"
+            onClick={scrollTo("skills")}
+            className={active === "skills" ? styles.active : undefined}
+          >
+            Skills
+          </a>
+        </li>
+        <li>
+          <a
+            href="#contact"
+            onClick={scrollTo("contact")}
+            className={active === "contact" ? styles.active : undefined}
+          >
+            Contact
+          </a>
+        </li>
+      </ul>
+    </nav>
+  );
+}

@@ -49,14 +49,19 @@ const skillData: SkillRow[] = [
 
 export default function Skills() {
   return (
-    <section className={styles.skills}>
+    <section className={styles.skills} id="skills">
       <h2 className={styles.heading}>Skills</h2>
       <div className={styles.table}>
         {skillData.map(({ title, keywords, icon: Icon }) => {
           return (
             <div key={title} className={styles.row}>
-              {Icon && <Icon className={styles.icon} aria-hidden="true" />}
-              <div className={styles.title}>{title}</div>
+              <div className={styles.title}>
+                {" "}
+                {Icon && (
+                  <Icon className={styles.icon} aria-hidden="true" />
+                )}{" "}
+                {title}
+              </div>
               <ul className={styles.keywords}>
                 {keywords.map((kw) => (
                   <li key={kw}>{kw}</li>

@@ -1,0 +1,30 @@
+.sunContainer {
+  position: absolute;
+  right: 0;
+  bottom: -200px;
+  width: 410px;
+  height: 600px;
+  overflow: hidden;
+}
+
+.sun {
+  width: 600px;
+  height: 600px;
+  color: var(--bright-orange);
+  opacity: 0.5;
+  transform: rotate(-0.2turn);
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating {
+  display: inline-block;
+  animation: rotate 2s linear infinite;
+}
