@@ -1,19 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./NavBar.module.css";
 import { PiSunFill } from "react-icons/pi";
 
-/**
- * Renders a sticky top navigation that scrolls smoothly to the
- * corresponding page sections (Intro, Skills, Contact).
- * The active link is highlighted based on the current scroll position.
- */
 export default function NavBar() {
   const [active, setActive] = useState<string>("intro");
 
-  // Update active link on scroll
   useEffect(() => {
     const sections = ["intro", "skills", "contact"];
     const handler = () => {
@@ -23,7 +16,7 @@ export default function NavBar() {
       for (const id of sections) {
         const el = document.getElementById(id);
         if (el) {
-          const offset = el.offsetTop - 80; // account for nav height
+          const offset = el.offsetTop - 80;
           if (scrollY >= offset) current = id;
         }
       }
@@ -31,11 +24,10 @@ export default function NavBar() {
     };
 
     window.addEventListener("scroll", handler, { passive: true });
-    handler(); // initialise on mount
+    handler();
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // Smooth scroll helper
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     const target = document.getElementById(id);

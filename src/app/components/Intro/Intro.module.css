@@ -2,9 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4rem 1rem;
-  background: var(--bg-dark);
-  color: var(--text-light);
+  padding: 0rem 1rem 4rem;
   min-height: 60vh;
 }
 
@@ -19,7 +17,6 @@
 .controls button {
   background: none;
   border: none;
-  color: var(--accent);
   font-size: 2rem;
   cursor: pointer;
   margin: 0 0.5rem;
@@ -39,4 +36,10 @@
   font-style: normal;
   font-stretch: normal;
   font-optical-sizing: auto;
+}
+
+@media screen and (min-width: 768px) {
+  .intro {
+    padding: 4rem 1rem;
+  }
 }
