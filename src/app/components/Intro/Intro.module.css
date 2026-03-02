@@ -15,6 +15,7 @@
 }
 
 .controls button {
+  color: var(--foreground);
   background: none;
   border: none;
   font-size: 2rem;
