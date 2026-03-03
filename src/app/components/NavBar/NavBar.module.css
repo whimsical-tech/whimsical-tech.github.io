@@ -39,13 +39,14 @@
   text-decoration: none;
   font-weight: 500;
   position: relative;
-  transition: color 0.2s ease;
+  transition: color 0.3s ease;
   padding: 1em;
   border-bottom: 1px solid var(--bright-orange);
 }
 
 .list a:hover {
   background-color: var(--emphasis);
+  color: var(--background);
 }
 
 .list a:hover::after {
