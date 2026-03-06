@@ -1,7 +1,15 @@
 {
   "intro.slides": [
     {
-      "text": "Integrated <span className='foreground'>third‑party SDKs</span>, managed <span className='foreground'>permission tiers</span>, and built <span className='foreground'>real‑time data dashboards</span>"
+      "segments": [
+        { "text": "Integrated ", "highlighted": false },
+        { "text": "third‑party SDKs", "highlighted": true },
+        { "text": ", managed ", "highlighted": false },
+        { "text": "permission tiers", "highlighted": true },
+        { "text": ", and built ", "highlighted": false },
+        { "text": "real time data dashboards", "highlighted": true },
+        { "text": ".", "highlighted": false }
+      ]
     }
   ]
 }

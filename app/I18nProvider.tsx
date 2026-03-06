@@ -6,7 +6,6 @@ import i18next from "i18next";
 import en from "@/dictionaries/en.json";
 import jp from "@/dictionaries/jp.json";
 
-// Initialize i18next
 if (!i18next.isInitialized) {
   i18next.use(initReactI18next).init({
     resources: {

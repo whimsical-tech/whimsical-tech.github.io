@@ -7,6 +7,7 @@ import styles from "./Intro.module.css";
 
 interface Slide {
   text: string;
+  segments: { text: string; highlighted: boolean }[];
 }
 
 export default function Intro() {
@@ -52,12 +53,13 @@ export default function Intro() {
           ›
         </button>
       </nav>
-      <p
-        onMouseEnter={() => clearInterval(intervalRef.current!)}
-        onMouseLeave={resetTimer}
-        className={styles.slide}
-        dangerouslySetInnerHTML={{ __html: slides[index]?.text || "" }}
-      />
+      <p className={styles.slide}>
+        {slides[index]?.segments.map((segment, i) => (
+          <span key={i} className={segment.highlighted ? "foreground" : ""}>
+            {segment.text}
+          </span>
+        ))}
+      </p>
       <Sun />
     </section>
   );
