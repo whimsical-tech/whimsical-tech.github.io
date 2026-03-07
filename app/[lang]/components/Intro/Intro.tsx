@@ -1,6 +1,8 @@
 "use client";
 
 import { useTranslation } from "next-i18next";
+import { notFound } from "next/navigation";
+import { getDictionary, hasLocale } from "@/dictionaries";
 import { useState, useEffect, useRef } from "react";
 import Sun from "../Sun/Sun";
 import styles from "./Intro.module.css";
@@ -10,8 +12,15 @@ interface Slide {
   segments: { text: string; highlighted: boolean }[];
 }
 
-export default function Intro() {
+export default async function Intro({ params }: PageProps<"/[lang]">) {
   const { t } = useTranslation("dictionary");
+
+  const { lang } = await params;
+
+  if (!hasLocale(lang)) notFound();
+
+  //  const t = await getDictionary(lang);
+
   const slides: Slide[] = t("intro.slides", { returnObjects: true }) as Slide[];
 
   const [index, setIndex] = useState(0);

@@ -7,14 +7,20 @@ export const metadata: Metadata = {
   description: "Santana's Portfolio",
 };
 
-export default function RootLayout({
+export async function generateStaticParams() {
+  return [{ lang: "en-US" }, { lang: "jp" }];
+}
+
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ lang: string }>;
 }>) {
   return (
-    <html lang="en">
-      <body className={`antialiased`}>
+    <html lang={(await params).lang}>
+      <body className="antialiased">
         <I18nProvider>{children}</I18nProvider>
       </body>
     </html>
