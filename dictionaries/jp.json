@@ -1,0 +1,14 @@
+{
+  "intro.slides": [
+    {
+      "segments": [
+        { "text": "サードパーティ", "highlighted": true },
+        { "text": "SDKの統合、", "highlighted": false },
+        { "text": "権限階層", "highlighted": true },
+        { "text": "の管理、", "highlighted": false },
+        { "text": "リアルタイムデータダッシュボード", "highlighted": true },
+        { "text": "の構築を担当しました。", "highlighted": false }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "intro.slides": [
+    {
+      "segments": [
+        { "text": "Integrated ", "highlighted": false },
+        { "text": "third‑party SDKs", "highlighted": true },
+        { "text": ", managed ", "highlighted": false },
+        { "text": "permission tiers", "highlighted": true },
+        { "text": ", and built ", "highlighted": false },
+        { "text": "real time data dashboards", "highlighted": true },
+        { "text": ".", "highlighted": false }
+      ]
+    }
+  ]
+}
