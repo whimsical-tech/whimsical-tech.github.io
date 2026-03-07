@@ -4,18 +4,17 @@ import Skills from "./components/Skills/Skills";
 import NavBar from "./components/NavBar/NavBar";
 import Timeline from "./components/Timeline/Timeline";
 
-export default function Home({
+export default async function Home({
   params,
-  searchParams,
 }: {
-  params: { lang: string };
-  searchParams: {};
+  params: Promise<{ lang: string }>;
 }) {
+  const { lang } = await params;
   return (
     <div>
       <NavBar />
       <main>
-        <Intro />
+        <Intro params={params} />
         <Skills />
         <Timeline />
         <Contact />

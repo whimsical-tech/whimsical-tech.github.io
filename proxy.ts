@@ -2,11 +2,11 @@ import { match } from "@formatjs/intl-localematcher";
 import { NextRequest, NextResponse } from "next/server";
 import Negotiator from "negotiator";
 
-let headers = { "accept-language": "en-US,en;q=0.5" };
-let locales = ["en-US", "jp"];
+let headers = { "accept-language": "en,en;q=0.5" };
+let locales = ["en", "jp"];
 let languages = new Negotiator({ headers }).languages();
 
-let defaultLocale = "en-US";
+let defaultLocale = "en";
 
 //match(languages, locales, defaultLocale);
 
@@ -36,7 +36,7 @@ export function proxy(request: NextRequest) {
   const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
   // e.g. incoming request is /products
-  // The new URL is now /en-US/products
+  // The new URL is now /en/products
   return NextResponse.redirect(request.nextUrl);
 }
 
