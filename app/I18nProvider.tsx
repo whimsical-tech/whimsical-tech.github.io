@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import i18next from "i18next";
 import en from "@/dictionaries/en.json";
@@ -12,7 +12,6 @@ if (!i18next.isInitialized) {
       en: { dictionary: en },
       jp: { dictionary: jp },
     },
-    lng: "en",
     fallbackLng: "en",
     ns: ["dictionary"],
     defaultNS: "dictionary",
@@ -22,6 +21,16 @@ if (!i18next.isInitialized) {
   });
 }
 
-export function I18nProvider({ children }: { children: ReactNode }) {
+export function I18nProvider({
+  children,
+  lang,
+}: {
+  children: ReactNode;
+  lang: string;
+}) {
+  useEffect(() => {
+    i18next.changeLanguage(lang);
+  }, [lang]);
+
   return <I18nextProvider i18n={i18next}>{children}</I18nextProvider>;
 }

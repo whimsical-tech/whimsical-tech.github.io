@@ -18,10 +18,12 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ lang: string }>;
 }>) {
+  const { lang } = await params;
+
   return (
-    <html lang={(await params).lang}>
+    <html lang={lang}>
       <body className="antialiased">
-        <I18nProvider>{children}</I18nProvider>
+        <I18nProvider lang={lang}>{children}</I18nProvider>
       </body>
     </html>
   );

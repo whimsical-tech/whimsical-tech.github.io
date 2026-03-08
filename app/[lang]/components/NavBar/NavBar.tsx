@@ -1,11 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useTranslation } from "next-i18next";
 import styles from "./NavBar.module.css";
 import { PiSunFill } from "react-icons/pi";
+import { BiWorld } from "react-icons/bi";
 
 export default function NavBar() {
   const [active, setActive] = useState<string>("intro");
+  const router = useRouter();
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language;
 
   useEffect(() => {
     const sections = ["intro", "skills", "contact"];
@@ -36,6 +42,11 @@ export default function NavBar() {
     }
   };
 
+  const switchLang = () => {
+    const newLang = currentLang === "en" ? "jp" : "en";
+    router.push(`/${newLang}`);
+  };
+
   const [isIconShown, setIsIconShown] = useState(true);
 
   return (
@@ -47,6 +58,10 @@ export default function NavBar() {
       >
         {" "}
         <span className={styles.heightEnforcer}>
+          {" "}
+          {
+            //maybe change name reveal to be a tooltip?
+          }
           Hi! I'm{" "}
           {isIconShown ? (
             <PiSunFill className={styles.wordplay} />
@@ -57,6 +72,11 @@ export default function NavBar() {
         tana <br />
         and this is Whimsical Tech
       </p>
+      <button onClick={switchLang} className={styles.langSwitch}>
+        <BiWorld />
+        {currentLang === "en" ? "JP" : "EN"}
+      </button>
+
       <ul className={styles.list}>
         <li>
           <a

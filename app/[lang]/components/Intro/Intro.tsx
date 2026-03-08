@@ -9,7 +9,11 @@ interface Slide {
   segments: { text: string; highlighted: boolean }[];
 }
 
-export default async function Intro({ params }: PageProps<"/[lang]">) {
+export default async function Intro({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
   const { lang } = await params;
 
   if (!hasLocale(lang)) notFound();

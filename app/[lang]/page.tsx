@@ -9,7 +9,6 @@ export default async function Home({
 }: {
   params: Promise<{ lang: string }>;
 }) {
-  const { lang } = await params;
   return (
     <div>
       <NavBar />
