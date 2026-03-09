@@ -1,0 +1,55 @@
+{
+  "navbar.intro": "Intro",
+  "navbar.skills": "Skills",
+  "navbar.contact": "Contact",
+  "intro.slides": [
+    {
+      "segments": [
+        { "text": "Integrated ", "highlighted": false },
+        { "text": "third‑party SDKs", "highlighted": true },
+        { "text": ", managed ", "highlighted": false },
+        { "text": "permission tiers", "highlighted": true },
+        { "text": ", and built ", "highlighted": false },
+        { "text": "real time data dashboards", "highlighted": true },
+        { "text": ".", "highlighted": false }
+      ]
+    },
+    {
+      "segments": [
+        { "text": "Built ", "highlighted": false },
+        {
+          "text": "React apps with hundreds of components",
+          "highlighted": true
+        },
+        {
+          "text": ", with demonstrated fluency in Component APIs.",
+          "highlighted": false
+        }
+      ]
+    },
+    {
+      "segments": [
+        { "text": "Optimised experiences ", "highlighted": false },
+        {
+          "text": "from Retina‑level MacBooks to older mobile devices",
+          "highlighted": true
+        },
+        { "text": " and even Smart TVs.", "highlighted": false }
+      ]
+    },
+    {
+      "segments": [
+        { "text": "Conducted ", "highlighted": false },
+        { "text": "senior‑level interviews", "highlighted": true },
+        { "text": " and ", "highlighted": false },
+        { "text": "mentored junior engineers", "highlighted": true },
+        { "text": ", ready for larger challenges.", "highlighted": false }
+      ]
+    }
+  ],
+  "timeline.2013": "2013 - began frontend internship",
+  "timeline.2016": "2016 - promoted to junior full time developer",
+  "timeline.2019": "2019 - flew to Germany to work in international startups",
+  "timeline.2022": "2022 - responsible for leading frontend development",
+  "timeline.2026": "2026 - working with you?"
+}

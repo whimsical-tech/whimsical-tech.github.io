@@ -9,12 +9,15 @@
   max-width: 1600px;
   margin: 0 auto;
   box-sizing: border-box;
-  display: block;
+  display: grid;
 }
 
 .hi {
   margin-top: 0;
-  text-align: center;
+  text-align: left;
+  width: fit-content;
+  order: 0;
+  grid-row: 1 / 2;
 }
 
 .heightEnforcer {
@@ -44,6 +47,33 @@
   border-bottom: 1px solid var(--bright-orange);
 }
 
+.langSwitch {
+  background: none;
+  color: var(--foreground);
+  padding: 0.5em 1em;
+  width: 3rem;
+  height: 3.5rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: -8px;
+  align-items: anchor-center;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
+  grid-row: 1 / 2;
+}
+
+.langSwitch:hover {
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
 .list a:hover {
   background-color: var(--emphasis);
   color: var(--background);
@@ -70,6 +100,7 @@
   .list {
     left: 20%;
     margin-top: 0;
+    grid-row: 1 / 3;
   }
   .list a {
     border-bottom: transparent;
@@ -86,8 +117,10 @@
   }
   .hi {
     text-align: inherit;
+    grid-row: 1 / 3;
   }
-  .nav {
-    display: flex;
+  .langSwitch {
+    order: 2;
+    grid-row: 1 / 3;
   }
 }
