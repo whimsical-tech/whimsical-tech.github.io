@@ -42,6 +42,12 @@ export default function IntroSlideshow({ slides }: IntroSlideshowProps) {
     resetTimer();
   };
 
+  //pause on hover, it's annoying to have text moving when you're trying to read!
+  const pause = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+  const resume = () => resetTimer();
+
   return (
     <>
       <nav className={styles.controls}>
@@ -52,7 +58,12 @@ export default function IntroSlideshow({ slides }: IntroSlideshowProps) {
           ›
         </button>
       </nav>
-      <p className={styles.slide}>
+      <p
+        className={styles.slide}
+        onMouseEnter={pause}
+        onMouseLeave={resume}
+        aria-live="polite"
+      >
         {slides[index]?.segments.map((segment, i) => (
           <span key={i} className={segment.highlighted ? "foreground" : ""}>
             {segment.text}

@@ -15,7 +15,7 @@ export default async function Home({
       <main>
         <Intro params={params} />
         <Skills />
-        <Timeline />
+        <Timeline params={params} />
         <Contact />
       </main>
     </div>

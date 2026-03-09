@@ -1,24 +1,33 @@
-//"use client";
-
+import { notFound } from "next/navigation";
+import { getDictionary, hasLocale } from "@/dictionaries";
 import styles from "./Timeline.module.css";
 
-export default function Timeline() {
+export default async function Timeline({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+
+  if (!hasLocale(lang)) notFound();
+
+  const t = await getDictionary(lang);
   return (
     <ul className={styles.timeline}>
       <li>
-        <p>2013 - began frontend internship</p>
+        <p>{t["timeline.2013"]}</p>
       </li>
       <li>
-        <p>2016 - promoted to junior full time developer</p>
+        <p>{t["timeline.2016"]}</p>
       </li>
       <li>
-        <p>2019 - flew to Germany to work in international startups</p>
+        <p>{t["timeline.2019"]}</p>
       </li>
       <li>
-        <p>2022 - responsible for leading frontend development</p>
+        <p>{t["timeline.2022"]}</p>
       </li>
       <li>
-        <p>2026 - working with you?</p>
+        <p>{t["timeline.2026"]}</p>
       </li>
     </ul>
   );

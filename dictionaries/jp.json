@@ -1,4 +1,7 @@
 {
+  "navbar.intro": "紹介",
+  "navbar.skills": "スキル",
+  "navbar.contact": "お問い合わせ",
   "intro.slides": [
     {
       "segments": [
@@ -9,6 +12,46 @@
         { "text": "リアルタイムデータダッシュボード", "highlighted": true },
         { "text": "の構築を担当しました。", "highlighted": false }
       ]
+    },
+    {
+      "segments": [
+        { "text": "数百個のコンポーネントを持つ", "highlighted": true },
+        {
+          "text": "React アプリを構築し、Component APIs の高い習熟度を示しました。",
+          "highlighted": false
+        }
+      ]
+    },
+    {
+      "segments": [
+        {
+          "text": "MacBook (Retina ディスプレイ) から古いスマホ、",
+          "highlighted": true
+        },
+        {
+          "text": "さらに Smart TV まで、",
+          "highlighted": false
+        },
+        {
+          "text": "多様なデバイスで体験を最適化しました。",
+          "highlighted": false
+        }
+      ]
+    },
+    {
+      "segments": [
+        { "text": "シニアレベルの面接を実施し、", "highlighted": false },
+        { "text": "ジュニアエンジニアをメンタリング", "highlighted": true },
+        {
+          "text": "し、より大きな課題に対応する準備ができています。",
+          "highlighted": false
+        }
+      ]
     }
-  ]
+  ],
+  "timeline.2013": "2013年 - フロントエンドインターン開始",
+  "timeline.2016": "2016年 - フルタイムジュニア開発者に昇格",
+  "timeline.2019": "2019年 - ドイツへ渡り、国際的なスタートアップで勤務",
+  "timeline.2022": "2022年 - フロントエンド開発をリードする立場に",
+  "timeline.2026": "2026年 - 一緒に働きましょう"
 }
