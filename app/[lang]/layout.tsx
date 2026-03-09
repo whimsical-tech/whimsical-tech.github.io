@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { I18nProvider } from "../I18nProvider";
-import "./globals.css";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: "Whimsical Tech",
