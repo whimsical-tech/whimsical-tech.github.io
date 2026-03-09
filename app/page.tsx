@@ -18,6 +18,7 @@ export default function Home() {
         <LuLoaderCircle
           style={{
             transform: "rotate(90deg)",
+            color: "var(--foreground)",
             textAlign: "center",
             marginTop: "50%",
           }}
