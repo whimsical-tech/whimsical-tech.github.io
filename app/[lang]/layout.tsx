@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { I18nProvider } from "../I18nProvider";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Whimsical Tech",
   description: "Santana's Portfolio",
+  icons: {
+    icon: { url: "/favicon.ico" },
+  },
 };
 
 export async function generateStaticParams() {
