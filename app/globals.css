@@ -63,6 +63,12 @@ input[type="reset"] {
   outline: inherit;
 }
 
+button:focus,
+button:hover,
+button:active {
+  border-color: var(--emphasis);
+}
+
 .emphasis {
   color: var(--emphasis);
 }

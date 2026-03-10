@@ -6,12 +6,16 @@ import { useTranslation } from "next-i18next";
 import styles from "./NavBar.module.css";
 import { PiSunFill } from "react-icons/pi";
 import { BiWorld } from "react-icons/bi";
+import { HiMenu, HiX } from "react-icons/hi";
+import FocusLock from "react-focus-lock";
+import { RemoveScroll } from "react-remove-scroll";
 
 export default function NavBar() {
   const [active, setActive] = useState<string>("intro");
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const sections = ["intro", "skills", "contact"];
@@ -40,6 +44,7 @@ export default function NavBar() {
     if (target) {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+    setIsMenuOpen(false);
   };
 
   const switchLang = () => {
@@ -50,7 +55,7 @@ export default function NavBar() {
   const [isIconShown, setIsIconShown] = useState(true);
 
   return (
-    <nav className={styles.nav}>
+    <nav className={`${styles.nav} ${isMenuOpen ? styles.menuOpen : ""}`}>
       <p
         onMouseEnter={() => setIsIconShown(false)}
         onMouseLeave={() => setIsIconShown(true)}
@@ -72,40 +77,57 @@ export default function NavBar() {
         tana <br />
         and this is Whimsical Tech
       </p>
-      <button onClick={switchLang} className={styles.langSwitch}>
-        <BiWorld />
-        {currentLang === "en" ? "JP" : "EN"}
-      </button>
 
-      <ul className={styles.list}>
-        <li>
-          <a
-            href="#intro"
-            onClick={scrollTo("intro")}
-            className={active === "intro" ? styles.active : undefined}
+      <FocusLock
+        disabled={!isMenuOpen}
+        returnFocus
+        className={styles.navLinksContainer}
+      >
+        <RemoveScroll enabled={isMenuOpen} className={styles.navLinks}>
+          <button
+            className={styles.hamburger}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"} //TODO: add translation
           >
-            {t("navbar.intro")}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#skills"
-            onClick={scrollTo("skills")}
-            className={active === "skills" ? styles.active : undefined}
-          >
-            {t("navbar.skills")}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#contact"
-            onClick={scrollTo("contact")}
-            className={active === "contact" ? styles.active : undefined}
-          >
-            {t("navbar.contact")}
-          </a>
-        </li>
-      </ul>
+            {isMenuOpen ? <HiX /> : <HiMenu />}
+          </button>
+
+          <ul className={styles.list}>
+            <li>
+              <a
+                href="#intro"
+                onClick={scrollTo("intro")}
+                className={active === "intro" ? styles.active : undefined}
+              >
+                {t("navbar.intro")}
+              </a>
+            </li>
+            <li>
+              <a
+                href="#skills"
+                onClick={scrollTo("skills")}
+                className={active === "skills" ? styles.active : undefined}
+              >
+                {t("navbar.skills")}
+              </a>
+            </li>
+            <li>
+              <a
+                href="#contact"
+                onClick={scrollTo("contact")}
+                className={active === "contact" ? styles.active : undefined}
+              >
+                {t("navbar.contact")}
+              </a>
+            </li>
+          </ul>
+
+          <button onClick={switchLang} className={styles.langSwitch}>
+            <BiWorld />
+            {currentLang === "en" ? "JP" : "EN"}
+          </button>
+        </RemoveScroll>
+      </FocusLock>
     </nav>
   );
 }
