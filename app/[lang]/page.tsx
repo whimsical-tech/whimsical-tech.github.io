@@ -12,7 +12,7 @@ export default async function Home({
   return (
     <div>
       <NavBar />
-      <main>
+      <main className="wrapper">
         <Intro params={params} />
         <Skills />
         <Timeline params={params} />
