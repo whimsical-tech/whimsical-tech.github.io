@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { I18nProvider } from "../I18nProvider";
+import Script from "next/script";
+
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -25,7 +27,14 @@ export default async function RootLayout({
 
   return (
     <html lang={lang}>
+      <head>
+        <Script
+          src={`https://keepandroidopen.org/banner.js?lang=${lang}&size=mini&id=banner`}
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="antialiased">
+        <div id="banner"></div>
         <I18nProvider lang={lang}>{children}</I18nProvider>
       </body>
     </html>
