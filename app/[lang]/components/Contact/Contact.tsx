@@ -1,10 +1,21 @@
+import { notFound } from "next/navigation";
+import { getDictionary, hasLocale } from "@/dictionaries";
 import styles from "./Contact.module.css";
 
-export default function Contact() {
+export default async function Contact({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+
+  if (!hasLocale(lang)) notFound();
+
+  const t = await getDictionary(lang);
   return (
     <footer id="contact" className={styles.contact}>
       <p className={styles.mailLink}>
-        Thank you for the visit! Contact me at{" "}
+        {t.contact}{" "}
         <a href="mailto:whimsicaltech+portfolio@proton.me">
           {" "}
           whimsicaltech+portfolio@proton.me

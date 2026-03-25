@@ -72,7 +72,7 @@ const skillData: SkillRow[] = [
   {
     title: "Tooling",
     keywords: [
-      "AI Enhanced Development (e.g. Cursor)",
+      "AI Tools (e.g. Cursor)",
       "AWS Cloud and Deployment",
       "CI/CD",
       "Storybook",
