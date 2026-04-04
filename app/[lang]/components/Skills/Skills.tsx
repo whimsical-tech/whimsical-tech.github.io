@@ -24,7 +24,7 @@ const skillData: SkillRow[] = [
       "Memoization",
       "Lazy loading",
       "Redux",
-      "Enzyme",
+      "React Testing Library",
       "Component Libraries",
     ],
     icon: FaReact,
