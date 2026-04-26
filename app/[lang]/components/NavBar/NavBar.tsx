@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "next-i18next";
 import styles from "./NavBar.module.css";
 import { PiSunFill } from "react-icons/pi";
@@ -9,8 +9,11 @@ import { BiWorld } from "react-icons/bi";
 import { HiMenu, HiX } from "react-icons/hi";
 import FocusLock from "react-focus-lock";
 import { RemoveScroll } from "react-remove-scroll";
+import Link from "next/link";
 
 export default function NavBar() {
+  const pathname = usePathname();
+  console.log(pathname);
   const [active, setActive] = useState<string>("intro");
   const router = useRouter();
   const { t, i18n } = useTranslation();
@@ -38,6 +41,7 @@ export default function NavBar() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
+  // if not on homepage, needs to go there first
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     const target = document.getElementById(id);
@@ -49,7 +53,10 @@ export default function NavBar() {
 
   const switchLang = () => {
     const newLang = currentLang === "en" ? "jp" : "en";
-    router.push(`/${newLang}`);
+
+    // Replace locale in path
+    const newPath = pathname.replace(`/${currentLang}`, `/${newLang}`);
+    router.push(newPath);
   };
 
   const [isIconShown, setIsIconShown] = useState(true);
@@ -110,6 +117,14 @@ export default function NavBar() {
               >
                 {t("navbar.skills")}
               </a>
+            </li>
+            <li>
+              <Link
+                className={active === "blog" ? styles.active : undefined}
+                href="/blog"
+              >
+                {t("navbar.blog")}
+              </Link>
             </li>
             <li>
               <a
