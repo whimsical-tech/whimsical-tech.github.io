@@ -29,7 +29,9 @@ export function I18nProvider({
   lang: string;
 }) {
   useEffect(() => {
-    i18next.changeLanguage(lang);
+    if (!i18next.isInitialized || i18next.language !== lang) {
+      i18next.changeLanguage(lang);
+    }
   }, [lang]);
 
   return <I18nextProvider i18n={i18next}>{children}</I18nextProvider>;

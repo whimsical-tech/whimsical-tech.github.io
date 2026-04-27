@@ -35,9 +35,16 @@ export function proxy(request: NextRequest) {
   // Redirect if there is no locale
   const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
-  // e.g. incoming request is /products
-  // The new URL is now /en/products
-  return NextResponse.redirect(request.nextUrl);
+
+  const response = NextResponse.redirect(request.nextUrl);
+  response.cookies.set("NEXT_LOCALE", locale, {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  });
+
+  // e.g. incoming request is /blog
+  // The new URL is now /en/blog
+  return response;
 }
 
 export const config = {

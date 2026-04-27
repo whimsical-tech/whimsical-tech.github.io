@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "next-i18next";
 import styles from "./NavBar.module.css";
@@ -13,40 +13,77 @@ import Link from "next/link";
 
 export default function NavBar() {
   const pathname = usePathname();
-  console.log(pathname);
   const [active, setActive] = useState<string>("intro");
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const getHomepagePath = () => {
+    return `/${currentLang}`;
+  };
+
+  const getSlugFromPathname = (path: string, locale: string): string => {
+    const regex = new RegExp(`^\\/${locale}\\/`);
+
+    const slug = path.replace(regex, "");
+
+    if (!slug && path === `/${locale}`) return "home";
+
+    return slug;
+  };
+
   useEffect(() => {
-    const sections = ["intro", "skills", "contact"];
-    const handler = () => {
-      const scrollY = window.scrollY;
-      let current = "intro";
+    if (pathname === getHomepagePath()) {
+      const sections = ["intro", "skills", "contact"];
 
-      for (const id of sections) {
-        const el = document.getElementById(id);
-        if (el) {
-          const offset = el.offsetTop - 80;
-          if (scrollY >= offset) current = id;
-        }
+      if (observerRef.current) {
+        observerRef.current.disconnect();
       }
-      setActive(current);
-    };
 
-    window.addEventListener("scroll", handler, { passive: true });
-    handler();
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActive(entry.target.id);
+            }
+          });
+        },
+        {
+          rootMargin: "-80px 0px 0px 0px",
+          threshold: 0.1,
+        },
+      );
+
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+
+      observerRef.current = observer;
+
+      return () => {
+        if (observerRef.current) observerRef.current.disconnect();
+      };
+    } else {
+      const slug = getSlugFromPathname(pathname, currentLang);
+      setActive(slug);
+    }
+  }, [pathname, currentLang]);
 
   // if not on homepage, needs to go there first
   const scrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
+
     const target = document.getElementById(id);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (pathname === getHomepagePath()) {
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } else {
+      router.push(`${getHomepagePath()}#${id}`);
     }
     setIsMenuOpen(false);
   };
@@ -68,9 +105,7 @@ export default function NavBar() {
         onMouseLeave={() => setIsIconShown(true)}
         className={styles.hi}
       >
-        {" "}
         <span className={styles.heightEnforcer}>
-          {" "}
           {
             //maybe change name reveal to be a tooltip?
           }
@@ -121,7 +156,7 @@ export default function NavBar() {
             <li>
               <Link
                 className={active === "blog" ? styles.active : undefined}
-                href="/blog"
+                href={`/${currentLang}/blog`}
               >
                 {t("navbar.blog")}
               </Link>

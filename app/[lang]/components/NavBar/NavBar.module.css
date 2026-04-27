@@ -92,11 +92,11 @@
   width: 0;
 }
 
-.active {
-  color: var(--emphasis);
+li .active {
+  background-color: var(--emphasis);
 }
 
-.active::after {
+li .active::after {
   width: 100%;
 }
 
