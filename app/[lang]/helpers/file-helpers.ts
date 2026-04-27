@@ -31,7 +31,9 @@ export async function getBlogPostList(): Promise<BlogPost[]> {
   );
 }
 
-export const loadBlogPost = React.cache(async function loadBlogPost(slug) {
+export const loadBlogPost = React.cache(async function loadBlogPost(
+  slug: string,
+) {
   let rawContent;
 
   // Wrapping this operation in a try/catch so that it stops

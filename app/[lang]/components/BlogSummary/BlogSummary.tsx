@@ -1,4 +1,4 @@
-import React from "react";
+import { getDictionary } from "@/dictionaries";
 import Link from "next/link";
 import { format } from "date-fns";
 
@@ -6,20 +6,22 @@ import styles from "./BlogSummary.module.css";
 
 interface BlogSummaryProps {
   slug: string;
-  lang: string;
+  lang: "en" | "jp";
   title?: string;
   publishedOn?: string | Date;
   abstract?: string;
 }
 
-export default function BlogSummary({
+export default async function BlogSummary({
   slug,
   lang,
   title,
   publishedOn,
   abstract,
 }: BlogSummaryProps) {
-  const href = `/${lang}/${slug}`;
+  const href = `/${lang}/blog/${slug}`;
+
+  const t = await getDictionary(lang);
   const humanizedDate = publishedOn
     ? format(new Date(publishedOn), "MMMM do, yyyy")
     : new Date().toLocaleDateString();
@@ -33,7 +35,7 @@ export default function BlogSummary({
       <p>
         {abstract}{" "}
         <Link href={href} className={styles.continueReadingLink}>
-          Continue reading <span className={styles.arrow}>→</span>
+          {t["blog.continue"]} <span className={styles.arrow}>→</span>
         </Link>
       </p>
     </div>

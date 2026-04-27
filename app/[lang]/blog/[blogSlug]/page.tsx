@@ -4,10 +4,10 @@ import { getDictionary, hasLocale } from "@/dictionaries";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
-import { loadBlogPost } from "../helpers/file-helpers";
-import COMPONENT_MAP from "../helpers/mdx-components";
+import { loadBlogPost } from "../../helpers/file-helpers";
+import COMPONENT_MAP from "../../helpers/mdx-components";
 
-import BlogHero from "../components/BlogHero/BlogHero";
+import BlogHero from "../../components/BlogHero/BlogHero";
 
 import styles from "./blogSlug.module.css";
 

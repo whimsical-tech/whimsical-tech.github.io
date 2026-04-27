@@ -8,9 +8,9 @@ import styles from "./blogpage.module.css";
 async function BlogHome({
   params,
 }: {
-  params: Promise<{ lang: "en" | "jp"; blogSlug: string }>;
+  params: Promise<{ lang: "en" | "jp" }>;
 }) {
-  const { lang, blogSlug } = await params;
+  const { lang } = await params;
 
   if (!hasLocale(lang)) notFound();
 

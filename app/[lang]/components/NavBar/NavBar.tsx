@@ -27,17 +27,18 @@ export default function NavBar() {
 
   const getSlugFromPathname = (path: string, locale: string): string => {
     const regex = new RegExp(`^\\/${locale}\\/`);
-
     const slug = path.replace(regex, "");
 
     if (!slug && path === `/${locale}`) return "home";
 
-    return slug;
+    return slug.split("/")[0] || "home";
   };
 
   useEffect(() => {
     if (pathname === getHomepagePath()) {
       const sections = ["intro", "skills", "contact"];
+
+      setActive("intro");
 
       if (observerRef.current) {
         observerRef.current.disconnect();
@@ -52,8 +53,8 @@ export default function NavBar() {
           });
         },
         {
-          rootMargin: "-80px 0px 0px 0px",
-          threshold: 0.1,
+          rootMargin: "-40px 0px 0px 0px",
+          threshold: 0.5,
         },
       );
 
@@ -80,7 +81,11 @@ export default function NavBar() {
     const target = document.getElementById(id);
     if (pathname === getHomepagePath()) {
       if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        });
       }
     } else {
       router.push(`${getHomepagePath()}#${id}`);

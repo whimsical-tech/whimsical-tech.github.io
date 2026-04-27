@@ -4,7 +4,8 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  width: 100%;
+  width: calc(100% - 32px);
+  padding: 0 16px;
   margin: 0 auto;
 }
 
