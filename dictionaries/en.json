@@ -4,6 +4,8 @@
   "navbar.skills": "Skills",
   "navbar.contact": "Contact",
   "navbar.blog": "Blog",
+  "blog.latest": "Latest Content",
+  "blog.continue": "Continue reading",
   "intro.slides": [
     {
       "segments": [

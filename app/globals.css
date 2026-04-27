@@ -27,6 +27,7 @@
   --forest-green: #237227;
   --bright-orange: #ff7f11 /*#ffaa00*/;
   --opaque-orange: #ffd786;
+  --content-width: 800px;
 }
 
 @theme inline {

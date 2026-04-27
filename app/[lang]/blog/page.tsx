@@ -1,5 +1,4 @@
-import React from "react";
-
+import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "@/dictionaries";
 import { getBlogPostList } from "../helpers/file-helpers";
 import BlogSummary from "../components/BlogSummary/BlogSummary";
@@ -9,19 +8,22 @@ import styles from "./blogpage.module.css";
 async function BlogHome({
   params,
 }: {
-  params: Promise<{ lang: string; blogSlug: string }>;
+  params: Promise<{ lang: "en" | "jp"; blogSlug: string }>;
 }) {
   const { lang, blogSlug } = await params;
 
   if (!hasLocale(lang)) notFound();
+
+  const t = await getDictionary(lang);
   const blogPosts = await getBlogPostList();
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.mainHeading}>Latest Content:</h1>
+      <h1 className={styles.mainHeading}>{t["blog.latest"]}</h1>
 
       {blogPosts.map((post) => (
         <BlogSummary
+          lang={lang}
           key={post.slug}
           slug={post.slug}
           title={post.title}

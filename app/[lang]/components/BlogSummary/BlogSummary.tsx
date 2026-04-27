@@ -4,16 +4,32 @@ import { format } from "date-fns";
 
 import styles from "./BlogSummary.module.css";
 
-export default function BlogSummary({ slug, title, publishedOn, abstract }) {
-  const href = `/${slug}`;
-  const humanizedDate = format(new Date(publishedOn), "MMMM do, yyyy");
+interface BlogSummaryProps {
+  slug: string;
+  lang: string;
+  title?: string;
+  publishedOn?: string | Date;
+  abstract?: string;
+}
+
+export default function BlogSummary({
+  slug,
+  lang,
+  title,
+  publishedOn,
+  abstract,
+}: BlogSummaryProps) {
+  const href = `/${lang}/${slug}`;
+  const humanizedDate = publishedOn
+    ? format(new Date(publishedOn), "MMMM do, yyyy")
+    : new Date().toLocaleDateString();
 
   return (
     <div className={styles.wrapper}>
       <Link href={href} className={styles.title}>
         {title}
       </Link>
-      <time dateTime={publishedOn}>{humanizedDate}</time>
+      <time dateTime={humanizedDate}>{humanizedDate}</time>
       <p>
         {abstract}{" "}
         <Link href={href} className={styles.continueReadingLink}>
