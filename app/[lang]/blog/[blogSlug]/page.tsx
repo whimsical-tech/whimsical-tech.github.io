@@ -16,8 +16,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ lang: string; blogSlug: string }>;
 }) {
-  const { blogSlug } = await params;
-  const blogPostData = await loadBlogPost(blogSlug);
+  const { blogSlug, lang } = await params;
+  const blogPostData = await loadBlogPost(blogSlug, lang);
 
   // If we can't locate the blog post, this will be a 404. This
   // means that the returned value from this function won't
@@ -42,7 +42,7 @@ async function BlogPost({
   const { lang, blogSlug } = await params;
 
   if (!hasLocale(lang)) notFound();
-  const blogPostData = await loadBlogPost(blogSlug);
+  const blogPostData = await loadBlogPost(blogSlug, lang);
 
   // If there is no blog post with the slug taken from the route
   // params, render a 404 page instead.

@@ -10,13 +10,21 @@ interface BlogPost {
   publishedOn?: string | Date;
 }
 
-export async function getBlogPostList(): Promise<BlogPost[]> {
-  const fileNames = await readDirectory("/content");
+export async function getBlogPostList(locale: string): Promise<BlogPost[]> {
+  const contentDir = path.join(process.cwd(), "content", locale);
+  const fileNames = await fs.readdir(contentDir);
+
+  // const fileNames = await readDirectory("/content");
 
   const blogPosts: BlogPost[] = [];
 
-  for (let fileName of fileNames) {
-    const rawContent = await readFile(`/content/${fileName}`);
+  for (const fileName of fileNames) {
+    if (!fileName.endsWith(".mdx")) continue;
+
+    const rawContent = await fs.readFile(
+      path.join(contentDir, fileName),
+      "utf8",
+    );
 
     const { data: frontmatter } = matter(rawContent);
 
@@ -26,35 +34,24 @@ export async function getBlogPostList(): Promise<BlogPost[]> {
     });
   }
 
-  return blogPosts.sort((p1, p2) =>
-    !p1.publishedOn < !p2.publishedOn ? 1 : -1,
-  );
+  return blogPosts.sort((a, b) => (!a.publishedOn < !b.publishedOn ? 1 : -1));
 }
 
 export const loadBlogPost = React.cache(async function loadBlogPost(
   slug: string,
+  locale: string,
 ) {
-  let rawContent;
+  const filePath = path.join(process.cwd(), "content", locale, `${slug}.mdx`);
 
-  // Wrapping this operation in a try/catch so that it stops
-  // throwing an error if the file can't be found. Instead,
-  // we'll return `null`, and the caller can figure out how
-  // to handle this situation.
   try {
-    rawContent = await readFile(`/content/${slug}.mdx`);
-  } catch (err) {
+    const rawContent = await fs.readFile(filePath, "utf8");
+    const { data: frontmatter, content } = matter(rawContent);
+    return { frontmatter, content };
+  } catch {
     return null;
   }
-
-  const { data: frontmatter, content } = matter(rawContent);
-
-  return { frontmatter, content };
 });
 
 function readFile(localPath: string) {
   return fs.readFile(path.join(process.cwd(), localPath), "utf8");
-}
-
-function readDirectory(localPath: string) {
-  return fs.readdir(path.join(process.cwd(), localPath));
 }

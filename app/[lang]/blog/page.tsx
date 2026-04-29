@@ -15,7 +15,7 @@ async function BlogHome({
   if (!hasLocale(lang)) notFound();
 
   const t = await getDictionary(lang);
-  const blogPosts = await getBlogPostList();
+  const blogPosts = await getBlogPostList(lang);
 
   return (
     <div className={styles.wrapper}>
