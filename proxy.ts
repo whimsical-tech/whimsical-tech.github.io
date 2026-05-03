@@ -1,14 +1,7 @@
-import { match } from "@formatjs/intl-localematcher";
 import { NextRequest, NextResponse } from "next/server";
-import Negotiator from "negotiator";
+import { i18n } from "@/dictionaries";
 
-let headers = { "accept-language": "en,en;q=0.5" };
-let locales = ["en", "jp"];
-let languages = new Negotiator({ headers }).languages();
-
-let defaultLocale = "en";
-
-//match(languages, locales, defaultLocale);
+const { defaultLocale, locales } = i18n;
 
 function getLocale(request: NextRequest) {
   const acceptLanguage = request.headers.get("accept-language");
@@ -24,7 +17,7 @@ function getLocale(request: NextRequest) {
 }
 
 export function proxy(request: NextRequest) {
-  // Check if there is any supported locale in the pathname
+  // Check if there is a supported locale in the pathname
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
