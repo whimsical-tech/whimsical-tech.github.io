@@ -94,7 +94,7 @@ export default function NavBar() {
   };
 
   const switchLang = () => {
-    const newLang = currentLang === "en" ? "jp" : "en";
+    const newLang = currentLang === "en" ? "ja" : "en";
 
     // Replace locale in path
     const newPath = pathname.replace(`/${currentLang}`, `/${newLang}`);

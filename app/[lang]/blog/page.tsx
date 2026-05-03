@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { getDictionary, hasLocale } from "@/dictionaries";
+import { getDictionary } from "@/dictionaries";
+import { hasLocale } from "@/i18n-config";
 import { getBlogPostList } from "../helpers/file-helpers";
 import BlogSummary from "../components/BlogSummary/BlogSummary";
 
@@ -8,7 +9,7 @@ import styles from "./blogpage.module.css";
 async function BlogHome({
   params,
 }: {
-  params: Promise<{ lang: "en" | "jp" }>;
+  params: Promise<{ lang: "en" | "ja" }>;
 }) {
   const { lang } = await params;
 

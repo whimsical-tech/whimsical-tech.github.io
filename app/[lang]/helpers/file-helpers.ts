@@ -14,8 +14,6 @@ export async function getBlogPostList(locale: string): Promise<BlogPost[]> {
   const contentDir = path.join(process.cwd(), "content", locale);
   const fileNames = await fs.readdir(contentDir);
 
-  // const fileNames = await readDirectory("/content");
-
   const blogPosts: BlogPost[] = [];
 
   for (const fileName of fileNames) {

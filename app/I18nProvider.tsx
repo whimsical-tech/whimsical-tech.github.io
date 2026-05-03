@@ -4,13 +4,13 @@ import { ReactNode, useEffect } from "react";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import i18next from "i18next";
 import en from "@/dictionaries/en.json";
-import jp from "@/dictionaries/jp.json";
+import ja from "@/dictionaries/ja.json";
 
 if (!i18next.isInitialized) {
   i18next.use(initReactI18next).init({
     resources: {
       en: { dictionary: en },
-      jp: { dictionary: jp },
+      ja: { dictionary: ja },
     },
     fallbackLng: "en",
     ns: ["dictionary"],

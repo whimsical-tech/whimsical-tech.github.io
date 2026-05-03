@@ -1,4 +1,4 @@
-import { getDictionary } from "@/dictionaries";
+import { getDictionary, Locale } from "@/dictionaries";
 import Link from "next/link";
 import { format } from "date-fns";
 
@@ -6,7 +6,7 @@ import styles from "./BlogSummary.module.css";
 
 interface BlogSummaryProps {
   slug: string;
-  lang: "en" | "jp";
+  lang: Locale;
   title?: string;
   publishedOn?: string | Date;
   abstract?: string;
