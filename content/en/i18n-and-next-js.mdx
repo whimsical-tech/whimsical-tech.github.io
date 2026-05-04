@@ -1,8 +1,13 @@
 ---
-title: "Step by step: How to add i18n to your existing Next.js 16 app"
+title: "How to add i18n to Next.js 16: a step-by-step, complete guide"
 abstract: As Japan becomes more and more globalized, the demand for multi-language applications will only increase. If you're still new to how i18n works, particularly in the Next.js environment, it can be quite daunting. In this article, I've broken down the process step by step, and you'll be ready to handle international applications!
 publishedOn: "2026-05-03T12:00:00-0400"
 ---
+
+In this guide you will learn:
+- How to implement translations application-wide
+- How to format date and currency according to country
+- How to add props and html to your translated strings
 
 Hello, Konnichiwa, Olá, Hallo.
 
@@ -24,9 +29,9 @@ Of course, if you want to start your own project from zero, or if you already ha
 
 We will add English option to a Japanese application. If you need more languages or other languages in your app, the process is fairly similar, and it will be explained as well.
 
-(add screenshot with caption: The starting point is an application entirely in Japanese, with hardcoded strings)
+(add screenshot with caption: The starting point is an application entirely in Japanese, with hardcoded strings.  The company and its contents are fictitious.)
 
-\*\*_Note:_\*\* This application was largely built by Cursor, I just made a couple of optimizations here and there. The company and its contents are fictitious.
+\*\*_Note:_\*\* This application was largely built by Cursor. Although I made a couple of optimizations here and there, there might be some suboptimal code, so please don't take the whole project as a role model.
 
 As you might have expected, the first thing we have to do is installing some packages.
 
@@ -54,7 +59,7 @@ function logSomething(something) {
 Now, let's create a few fundamental files.
 First, we need the basic configuration of our project.
 
-I'm calling this file i18n-config.ts. Let's put it in the root folder.
+I'm calling this file ```i18n-config.ts```. Let's put it in the root folder.
 
 ```ts
 export const i18n = {
@@ -160,13 +165,13 @@ There is a lang attribute in the HTML, and you no longer want this value to be s
 
 From now we will read locale from the url params like this:
 
-```jsx
+```tsx
 export default async function RootLayout({
   children,
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lang: string }>;
+  params: Promise<{ lang: Locale }>;
 }>) {
   const { lang } = await params;
   return (
@@ -182,7 +187,7 @@ Most people will not simply try to change the URL!
 So let's create a locale switcher.
 Since I promised to help even if you want to add multiple languages, a dropdown with options is a scalable choice.
 
-```jsx
+```tsx
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
@@ -267,7 +272,7 @@ In ja.json, please write:
 {slogan: "日本各地の売買・賃貸をワンストップでサポートします"}
 ```
 
-And in the jsx, replace the hardcoded string with  ```{t["slogan"]}```
+And in the tsx, replace the hardcoded string with  ```{t["slogan"]}```
 You can name "t" anything you want. Maybe you prefer to use the full word "translate".
 Make the following changes to ```SiteHeader.tsx``` or whichever component you are adding the translations to.
 Remember, it must be a Server component!
@@ -278,7 +283,7 @@ export async function SiteHeader({
   params,
 }: {
   active: NavKey;
-  params: Promise<{ lang: string }>;
+  params: Promise<{ lang: Locale }>;
 }) {
   const { lang } = await params;
   const t = await getLocale(lang);
@@ -352,7 +357,7 @@ export function I18nProvider({
 ```
 
 layout.tsx
-```jsx
+```tsx
     <html lang={lang} className={notoSansJp.variable}>
       <body>
         <!-- add the provider to the main layout.tsx of your project -->
@@ -361,9 +366,9 @@ layout.tsx
     </html>
 ```
 
-LastVisitNotice.tsx is a client component, so it is the perfect use case to test our provider.
+```LastVisitNotice.tsx``` is a client component, so it is the perfect use case to test our provider.
 One thing that remains the same: You will still want to add the translated strings to the json files and replace in the tsx accordingly.
-So, in the case of the example repository, I'm replacing our hardcoded string  ※表示される日付はいつも今日の日付です（デモ用のローカル表示）。 with lastVisit.dateWarning.
+So, in the case of the example repository, I'm replacing our hardcoded string  ※表示される日付はいつも今日の日付です（デモ用のローカル表示）。 with ```t("lastVisit.dateWarning")```
 
 en.json
 ```
@@ -374,3 +379,131 @@ en.json
   }
 }
 ```
+
+This concludes the basic tutorial for both client and server components.
+By replicating the steps above accordingly, you should be able to deliver multi-language applications from scratch, or apply the changes to your current Next.js 16 project.
+But we can still go even deeper, because language changes do not stop at words alone.
+
+For this next example let's continue in ```LastVisitNotice.tsx``` and take a look at the remaining untranslated string.
+It is much more complex than the strings we've translated so far. It contains two props and three ```<strong>``` tags.
+
+There is more than one way to handle this. One possibility is to use template strings.
+```tsx
+{t("lastVisit.mainText", {
+  date: formatVisitDate(locale),
+  count: NEW_LISTING_COUNT,
+})}
+```
+
+```json
+"lastVisit.mainText": "前回のご訪問は {{date}} でした。その後、新着物件が {{count}} 件 加わっています。一覧では NEW の付いた物件を先頭に並べています。"
+```
+
+(the below should be in its own box if possible)
+P.S.: You will also notice I changed ```function formatVisitDate()``` to accept a locale parameter.
+I also moved the function inside the component so we can access the ```t()``` and added a correspondent string to "不明な日時" in the json files.
+```ts
+function formatVisitDate(locale: string) {
+  const d = new Date();
+  if (Number.isNaN(d.getTime())) return t("unknownDate");
+  return new Intl.DateTimeFormat(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "short",
+  }).format(d);
+}
+```
+
+Template strings work great if all you want is to add some props to your translation, but you might have noticed I removed the ```<strong>``` tags from this solution.
+That's because normally React would not be able to read tags from the text, and we would have to add something like ```dangerouslySetInnerHTML```, which I prefer to avoid.
+
+If there is a need for html in the strings, we can use a handy component from ```react-i18next``` library called ```Trans```.
+```tsx
+<Trans
+  i18nKey="lastVisit.mainText"
+  values={{
+    date: formatVisitDate(locale),
+    count: NEW_LISTING_COUNT,
+  }}
+>
+  <strong>date</strong>
+  <strong>count</strong>
+  <strong>NEW</strong>
+</Trans>
+```
+(add a notice "somewhere" that Trans can only be used client-side)
+
+Use the html you want inside ```<Trans>```. The text is just a placeholder, and it is not relevant.
+This is how to implement it in the json side, notice the increasing numbers wrapped in tags. They will directly correlate to the elements you are using in the tsx.
+
+ja.json
+```json
+ "mainText": "前回のご訪問は <1>{{date}}</1> でした。その後、新着物件が <3>{{count}} 件</3> 加わっています。一覧では <5>NEW</5> の付いた物件を先頭に並べていま。"
+```
+
+en.json
+```json
+ "mainText": "Your last visit was <1>{{date}}</1>. Since then, <3>{{count}} new listings</3> have been added. In the list, listings with <5>NEW</5> are displayed at the top."
+```
+
+You might be thinking, can't I just use multiple strings instead?
+Perhaps you could have used a string for "Your last visit was  ", then show the prop as usual in the tsx, then continue with another string ". Since then, ", then the next prop, and so on.
+Then there is no need for template strings or external components.
+However, not only is that more complicated and more difficult to read, it can also easily introduce errors as different languages have different flows and word order.
+Even in the example above, you don't need to know both English and Japanese to realize the first full stop comes in English right after the prop, where as in Japanese there is one more word.
+And in other languages the structure could vary even more widely, and perhaps the prop should even start the sentence.
+To make sure to account for all differences and understand them at a glance, make sure to use Trans or a template string when there are props involved!
+
+Naming things
+As I was focused on explaining different scenarios, my current locale files only have 4 keys.
+```
+{
+  "lastVisit": {
+    "dateWarning": "※表示される日付はいつも今日の日付です（デモ用のローカル表示）",
+    "mainText": "前回のご訪問は <1>{{date}}</1> でした。その後、新着物件が <3>{{count}} 件</3> 加わっています。一覧では <5>NEW</5> の付いた物件を先頭に並べていま。"
+  },
+  "slogan": "日本各地の売買・賃貸をワンストップでサポートします",
+  "unknownDate": "不明な日時"
+}```
+
+There is no right or wrong way to set up the locale files, it varies depending on the needs of your application.
+Of course, you want to make sure all keys are unique and easy to identify. "mainText", for example, should not be a key by itself. mainText of what?
+
+It is a good idea to keep all or most translations nested, like in lastVisit.
+You can see a more extended example of this in the final version of the project, where I translated all strings.
+
+But you don't need to have only 1 file per language.
+Especially if your project is large, you may want folders for each language, and instead of nesting translations in a object, you may want each locale file to correspond to a page or component in your application.
+Something like:
+
+- locales
+  - en/
+    - lastVisitNotice.json
+    - propertyDetail.json
+    - aboutPage.json
+    - ...
+  - jp/
+    - lastVisitNotice.json
+    - propertyDetail.json
+    - aboutPage.json
+    - ...
+
+Bonus: Currency
+Currency is a complicated topic that deserves its own article.
+
+In a real world scenario, you will want to track currency and language separately.
+For example, maybe in your project a Japanese person who lives abroad is trying to buy something from your website.
+They might pay in Euro, but it is likely they would prefer the UI in their native language.
+The same language can also represent different currencies. Both U.S. and U.K. speak English, but one uses dollars and the other uses pounds.
+
+But the truly delicate matter is the conversion. Conversion changes all the time, and making that kind of calculation in the frontend is generally unwise.
+In most cases you'll want the backend to send you the correct raw number and in the tsx just handle the transformation.
+
+You can then use ```Intl.NumberFormat``` or a library such as currency.js or money.js.
+
+Would you like an article talking about that next?
+
+What do you do when you have to work with currencies and translations?
+
+Let me know in the comments, and let's talk more soon!

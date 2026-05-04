@@ -22,17 +22,13 @@ function getLocale(request: NextRequest) {
 export function proxy(request: NextRequest) {
   // Check if there is a supported locale in the pathname
   const { pathname } = request.nextUrl;
-
-  console.log({ pathname });
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
-  console.log({ pathnameHasLocale });
   if (pathnameHasLocale) return;
 
   // Redirect if there is no locale
   const locale = getLocale(request);
-  console.log({ locale });
   request.nextUrl.pathname = `/${locale}${pathname}`;
 
   const response = NextResponse.redirect(request.nextUrl);
