@@ -1,4 +1,5 @@
-import { getDictionary, Locale } from "@/dictionaries";
+import { getDictionary } from "@/dictionaries";
+import { Locale } from "@/i18n-config";
 import Link from "next/link";
 import { format } from "date-fns";
 

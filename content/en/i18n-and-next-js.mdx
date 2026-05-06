@@ -35,26 +35,7 @@ We will add English option to a Japanese application. If you need more languages
 
 As you might have expected, the first thing we have to do is installing some packages.
 
-`npm install next-i18next i18next react-i18next`
-
-<details>
-  <summary>Optional in-depth explanation of what each package represents</summary>
-  
-  ### Heading
-  1. Foo
-  2. Bar
-     * Baz
-     * Qux
-
-### Some Javascript
-
-```js
-function logSomething(something) {
-  console.log("Something", something);
-}
-```
-
-</details>
+`npm install i18next react-i18next`
 
 Now, let's create a few fundamental files.
 First, we need the basic configuration of our project.
@@ -73,9 +54,11 @@ export const hasLocale = (locale: string): locale is Locale =>
   locale in i18n.locales;
 ```
 
-<details><summary>Breakdown of i18-config.ts</summary></details>
+This is the file where you define which language should be the default in your website, where you include the array with the languages you'll be using, and a simple check that matches languages against the one present in your app to see if there is a match.
 
-Because import() can cause bundling issues during Node.js buildtime, we also need a separate locales.ts:
+The next thing we want is to load our translations. It needs to be a separate file because import() can cause bundling issues during Node.js buildtime.
+
+Next file: locales.ts
 
 ```ts
 import type { Locale } from "./i18n-config";
@@ -85,29 +68,29 @@ const locales = {
   ja: () => import("../locales/ja.json").then((module) => module.default),
 };
 
-export const getLocale = async (locale: Locale) =>
+export const getTranslation = async (locale: Locale) =>
   locales[locale]?.() ?? locales.ja();
 
 ```
 
-Make sure to also create a folder with the name locales and the files en.json and ja.json.
-If you're using other languages, make sure to match them accordingly.
-For now, add only {} to those files to avoid compilation errors.
+Make sure to also create a folder (locales) with files (en.json, ja.json) that matches the loaded path.
+If you're using other languages, make sure to add them accordingly.
+To avoid compilation errors, make sure to add empty curly braces {} in all of the translation files. 
 Later we will add all translated strings there, but for now let's continue our configuration.
 
 Directly under the app folder, create a folder called [lang].
-The brackets specify lang is a dynamic value that will change.
+The brackets are important, they specify lang is a dynamic parameter.
 Inside [lang] you should have all of your pages.
 
-(screenshot of how directory should look)
+there is a screenshot of how the directory should look like 2026-05-06 23:09 more or less
 
-Now your app is only accessible if you manually type /en or /ja in the url.
-Let's create a proxy.ts file in the same level as your app folder.
+Right now your app is only accessible if you manually add a parameter in the url.
+To fix this, let's create a proxy.ts file in the same level as your app folder.
 Please notice, if you are using an older version of Next.js (below 16), you will need a middleware file instead.
 
 ```ts
 import { NextRequest, NextResponse } from "next/server";
-import { i18n, Locale } from "./i18-config";
+import { i18n, Locale } from "./i18n-config";
 
 const { defaultLocale, locales } = i18n;
 
@@ -147,16 +130,8 @@ export const config = {  matcher: [
 };
 ```
 
-If your app can't automatically detect the proxy, add it explicitly to tsconfig.json:
-
-```
-"include": [
-  "proxy.ts"
-]
-```
-
 Now even if there are no language params in the url, an automatic redirection will occur.
-However, we haven't changed the contents yet, so you are seeing the same strings for all languages.
+However, because we haven't changed the contents yet, we are seeing the same strings for all languages.
 
 Let's handle that next!
 
@@ -166,19 +141,20 @@ There is a lang attribute in the HTML, and you no longer want this value to be s
 From now we will read locale from the url params like this:
 
 ```tsx
-export default async function RootLayout({
+export default async function RootLayout({ // asyncにする
   children,
-  params,
+  params, // 新しい
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: Locale }>; // 新しい
 }>) {
-  const { lang } = await params;
+  const { lang } = await params; // 新しい
   return (
     <html lang={lang} ...
 ```
 
 You can check if it's working by inspecting the live code in the browser and checking if the ```<html lang="">``` is changing as you change language in the url.
+Only languages specified in your config file will be valid.
 
 We are getting there!
 
@@ -186,6 +162,7 @@ Next, we want to offer our users an in-built way to change languages.
 Most people will not simply try to change the URL!
 So let's create a locale switcher.
 Since I promised to help even if you want to add multiple languages, a dropdown with options is a scalable choice.
+I added it to components folder.
 
 ```tsx
 "use client";
@@ -193,11 +170,33 @@ Since I promised to help even if you want to add multiple languages, a dropdown 
 import { useRouter, usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { Locale } from "@/i18n-config";
+import { initReactI18next, useTranslation } from "react-i18next";
+import i18next from "i18next";
+import en from "../../locales/en.json";
+import ja from "../../locales/ja.json";
+
 
 const locales: Record<Locale, { name: string; flag: string }> = {
   en: { name: "English", flag: "🇬🇧" },
   ja: { name: "日本語", flag: "🇯🇵" },
 };
+
+
+if (!i18next.isInitialized) {
+  i18next.use(initReactI18next).init({
+    resources: {
+      en: { locale: en },
+      ja: { locale: ja },
+    },
+    fallbackLng: "en",
+    ns: ["locale"],
+    defaultNS: "locale",
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+}
+
 
 export default function LanguageSwitcher() {
   const router = useRouter();
@@ -286,7 +285,7 @@ export async function SiteHeader({
   params: Promise<{ lang: Locale }>;
 }) {
   const { lang } = await params;
-  const t = await getLocale(lang);
+  const t = await getTranslation(lang);
 ```
 
 In ```[lang]/page.tsx```, make sure to add params to SiteHeader, like this:
@@ -295,7 +294,7 @@ In ```[lang]/page.tsx```, make sure to add params to SiteHeader, like this:
 export default function Home({
   params,
 }: {
-  params: Promise<{ lang: string }>;
+  params: Promise<{ lang: Locale }>;
 }) {
   return (
     <div className={styles.page}>
@@ -305,11 +304,29 @@ export default function Home({
 Test! Your first translated string should now be visible.
 (show UI of working translations)
 
-Ok, now you can just do basically the same thing to all strings in your website and we are done here.
+Don't forget to also add locale to all links.
+In SiteHeader.tsx that can be done by adding lang to the href.
+```tsx
+ <Link href={`/${lang}/`} className={styles.brand}>
+         ...
+        </Link>
+<nav className={styles.nav} aria-label="主要ナビゲーション">
+          <Link
+            href={`/${lang}/`} > <!-- here -->
+           ...
+          </Link>
+          <Link
+            href={`/${lang}/about`} 
+           ...
+        </nav>
+```
+You can follow this pattern of taking the language from the params to apply translations and to add locale to links.
+Do this in all server components and we are done!
 That's the oversimplified version.
 
 Now, let me show you how to add the translations in client components.
 Remember this is not the ideal solution as they might slug behind the server components and cause hydration issues.
+Try to load translations in your server components as much as possible!
 
 If you are already familiar with React Context, you'll know it's a way to easily provide information across your app without having to endless pass props along the tree.
 In similar fashion, we will use a Provider in layout.tsx to pass the language along the entire app.
@@ -319,31 +336,17 @@ In similar fashion, we will use a Provider in layout.tsx to pass the language al
 
 import { ReactNode, useEffect } from "react";
 import { I18nextProvider, initReactI18next } from "react-i18next";
+import { Locale } from "@/i18n-config";
 import i18next from "i18next";
 import en from "../../locales/en.json";
 import ja from "../../locales/ja.json";
-
-if (!i18next.isInitialized) {
-  i18next.use(initReactI18next).init({
-    resources: {
-      en: { locale: en },
-      ja: { locale: ja },
-    },
-    fallbackLng: "en",
-    ns: ["locale"],
-    defaultNS: "locale",
-    interpolation: {
-      escapeValue: false,
-    },
-  });
-}
 
 export function I18nProvider({
   children,
   lang,
 }: {
   children: ReactNode;
-  lang: string;
+  lang: Locale;
 }) {
   useEffect(() => {
     if (!i18next.isInitialized || i18next.language !== lang) {
@@ -368,17 +371,29 @@ layout.tsx
 
 ```LastVisitNotice.tsx``` is a client component, so it is the perfect use case to test our provider.
 One thing that remains the same: You will still want to add the translated strings to the json files and replace in the tsx accordingly.
-So, in the case of the example repository, I'm replacing our hardcoded string  ※表示される日付はいつも今日の日付です（デモ用のローカル表示）。 with ```t("lastVisit.dateWarning")```
+So, in the case of the example repository, I'm replacing our hardcoded string  ※表示される日付はいつも今日の日付です（デモ用の表示）。 with ```t("lastVisit.dateWarning")```
 
 en.json
 ```
 {
   "slogan": "One-stop support for buying, selling, and renting throughout Japan",
   "lastVisit": {
-    "dateWarning": "The displayed date is always today's date (local display for demo purposes)"
+    "dateWarning": "The displayed date is always today's date (demo purposes only)"
   }
 }
 ```
+
+
+Now load the translations:
+```tsx
+const { t } = useTranslation();
+```
+
+Don't forget the import:
+```tsx
+import { useTranslation } from "react-i18next";
+```
+
 
 This concludes the basic tutorial for both client and server components.
 By replicating the steps above accordingly, you should be able to deliver multi-language applications from scratch, or apply the changes to your current Next.js 16 project.
@@ -415,10 +430,24 @@ function formatVisitDate(locale: string) {
 }
 ```
 
+We can get the locale through context:
+```tsx
+const { t, i18n } = useTranslation();
+const locale = i18n.language;
+```
+
+The import is also updated to:
+```tsx
+import { Trans, useTranslation } from "react-i18next";
+```
+
+
 Template strings work great if all you want is to add some props to your translation, but you might have noticed I removed the ```<strong>``` tags from this solution.
 That's because normally React would not be able to read tags from the text, and we would have to add something like ```dangerouslySetInnerHTML```, which I prefer to avoid.
 
 If there is a need for html in the strings, we can use a handy component from ```react-i18next``` library called ```Trans```.
+Go ahead and replace the paragraph with the code below:
+
 ```tsx
 <Trans
   i18nKey="lastVisit.mainText"
@@ -426,25 +455,19 @@ If there is a need for html in the strings, we can use a handy component from ``
     date: formatVisitDate(locale),
     count: NEW_LISTING_COUNT,
   }}
->
-  <strong>date</strong>
-  <strong>count</strong>
-  <strong>NEW</strong>
-</Trans>
+/>
 ```
 (add a notice "somewhere" that Trans can only be used client-side)
-
-Use the html you want inside ```<Trans>```. The text is just a placeholder, and it is not relevant.
-This is how to implement it in the json side, notice the increasing numbers wrapped in tags. They will directly correlate to the elements you are using in the tsx.
+Now we can use the HTML tags directly in the translation files!
 
 ja.json
 ```json
- "mainText": "前回のご訪問は <1>{{date}}</1> でした。その後、新着物件が <3>{{count}} 件</3> 加わっています。一覧では <5>NEW</5> の付いた物件を先頭に並べていま。"
+ "mainText": "前回のご訪問は <strong>{{date}}</strong> でした。その後、新着物件が <strong>{{count}} 件</strong> 加わっています。一覧では <strong>NEW</strong> の付いた物件を先頭に並べていま。"
 ```
 
 en.json
 ```json
- "mainText": "Your last visit was <1>{{date}}</1>. Since then, <3>{{count}} new listings</3> have been added. In the list, listings with <5>NEW</5> are displayed at the top."
+ "mainText": "Your last visit was <strong>{{date}}</strong>. Since then, <strong>{{count}} new listings</strong> have been added. In the list, listings with <strong>NEW</strong> are displayed at the top."
 ```
 
 You might be thinking, can't I just use multiple strings instead?
