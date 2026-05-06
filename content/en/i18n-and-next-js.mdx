@@ -50,8 +50,9 @@ export const i18n = {
 
 export type Locale = (typeof i18n)["locales"][number];
 
-export const hasLocale = (locale: Locale) =>
-  locale in i18n.locales;
+export const hasLocale = (locale: Locale) => {
+  return i18n.locales.includes(locale);
+}
 ```
 
 This is the file where you define which language should be the default in your website, where you include the array with the languages you'll be using, and a simple check that matches languages against the one present in your app to see if there is a match.
@@ -155,6 +156,13 @@ export default async function RootLayout({ // asyncにする
 
 You can check if it's working by inspecting the live code in the browser and checking if the ```<html lang="">``` is changing as you change language in the url.
 Only languages specified in your config file will be valid.
+
+Also add to the same file:
+```tsx
+export async function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "ja" }];
+}
+```
 
 We are getting there!
 
