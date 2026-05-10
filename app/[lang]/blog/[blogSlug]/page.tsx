@@ -17,7 +17,7 @@ export async function generateStaticParams() {
 
     for (const post of posts) {
       params.push({
-        locale,
+        lang: locale,
         slug: post.slug,
       });
     }
@@ -32,6 +32,11 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale; blogSlug: string }>;
 }) {
   const { blogSlug, lang } = await params;
+
+  if (!hasLocale(lang)) {
+    return {};
+  }
+
   const blogPostData = await loadBlogPost(blogSlug, lang);
 
   // If we can't locate the blog post, this will be a 404. This
