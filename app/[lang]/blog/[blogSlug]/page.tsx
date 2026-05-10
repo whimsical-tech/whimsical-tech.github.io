@@ -11,6 +11,10 @@ import BlogHero from "../../components/BlogHero/BlogHero";
 
 import styles from "./blogSlug.module.css";
 
+export async function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "ja" }];
+}
+
 export async function generateMetadata({
   params,
 }: {
