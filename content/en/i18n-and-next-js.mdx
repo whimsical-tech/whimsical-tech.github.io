@@ -1,7 +1,7 @@
 ---
 title: "How to add i18n to Next.js 16: a step-by-step, complete guide"
 abstract: As Japan becomes more and more globalized, the demand for multi-language applications will only increase. If you're still new to how i18n works, particularly in the Next.js environment, it can be quite daunting. In this article, I've broken down the process step by step, and you'll be ready to handle international applications!
-publishedOn: "2026-05-03T12:00:00-0400"
+publishedOn: "2026-05-10T12:00:00-0400"
 ---
 
 In this guide you will learn:
@@ -24,14 +24,11 @@ Then, let's dive in!
 
 To know where to go we first must know where we are.
 
-For this tutorial we will use the repository available in https://github.com/whimsical-tech/i18n-nextjs-tutorial as a starting point.
+For this tutorial we will use [this repository](https://github.com/whimsical-tech/i18n-nextjs-tutorial) as a starting point.
+It is entirely in Japanese with hardcoded strings.
 Of course, if you want to start your own project from zero, or if you already have your own application, you'll be able to easily follow along as well.
 
 We will add English option to a Japanese application. If you need more languages or other languages in your app, the process is fairly similar, and it will be explained as well.
-
-(add screenshot with caption: The starting point is an application entirely in Japanese, with hardcoded strings.  The company and its contents are fictitious.)
-
-\*\*_Note:_\*\* This application was largely built by Cursor. Although I made a couple of optimizations here and there, there might be some suboptimal code, so please don't take the whole project as a role model.
 
 As you might have expected, the first thing we have to do is installing some packages.
 
@@ -83,7 +80,7 @@ Directly under the app folder, create a folder called [lang].
 The brackets are important, they specify lang is a dynamic parameter.
 Inside [lang] you should have all of your pages.
 
-![This is how the directory currently looks like](../../public/directory.png "This is how the directory currently looks like")
+![This is how the directory currently looks like](../../directory.png "This is how the directory currently looks like")
 
 Right now your app is only accessible if you manually add a parameter in the url.
 To fix this, let's create a proxy.ts file in the same level as your app folder.
@@ -252,7 +249,7 @@ export default function LanguageSwitcher() {
 
 For our example repository, I am importing this component in the SiteHeader.tsx, right after the last ```<Link>```.
 
-![LanguageSwitcher implemented in UI](../../public/languageSwitcher.png "LanguageSwitcher implemented in UI")
+![LanguageSwitcher implemented in UI](../../languageSwitcher.png "LanguageSwitcher implemented in UI")
 
 Go ahead and try your new LanguageSwitcher, and you should be able to see the url changing!
 
