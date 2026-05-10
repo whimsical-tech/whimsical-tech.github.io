@@ -1,16 +1,12 @@
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/dictionaries";
-import { hasLocale } from "@/i18n-config";
+import { Locale, hasLocale } from "@/i18n-config";
 import { getBlogPostList } from "../helpers/file-helpers";
 import BlogSummary from "../components/BlogSummary/BlogSummary";
 
 import styles from "./blogpage.module.css";
 
-async function BlogHome({
-  params,
-}: {
-  params: Promise<{ lang: "en" | "ja" }>;
-}) {
+async function BlogHome({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params;
 
   if (!hasLocale(lang)) notFound();

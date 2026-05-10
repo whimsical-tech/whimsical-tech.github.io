@@ -1,8 +1,6 @@
 import React from "react";
 
-import { getDictionary } from "@/dictionaries";
-import type { Locale } from "@/i18n-config";
-import { hasLocale } from "@/i18n-config";
+import { Locale, hasLocale } from "@/i18n-config";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
@@ -16,7 +14,7 @@ import styles from "./blogSlug.module.css";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: string; blogSlug: string }>;
+  params: Promise<{ lang: Locale; blogSlug: string }>;
 }) {
   const { blogSlug, lang } = await params;
   const blogPostData = await loadBlogPost(blogSlug, lang);
