@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/dictionaries";
-import { hasLocale } from "@/i18n-config";
-import { Locale } from "@/i18n-config";
+import { Locale, hasLocale } from "@/i18n-config";
 import styles from "./Contact.module.css";
 
 export default async function Contact({
