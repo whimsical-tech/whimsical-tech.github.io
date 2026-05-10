@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { i18n, Locale } from "@/i18n-config";
+import { Locale, i18n } from "@/i18n-config";
 
 const { defaultLocale, locales } = i18n;
 
@@ -15,7 +15,6 @@ function getLocale(request: NextRequest) {
   const matched = preferredLocales.find((lang) =>
     locales.includes(lang as Locale),
   );
-
   return matched ?? defaultLocale;
 }
 
@@ -25,6 +24,7 @@ export function proxy(request: NextRequest) {
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
+
   if (pathnameHasLocale) return;
 
   // Redirect if there is no locale
@@ -32,13 +32,12 @@ export function proxy(request: NextRequest) {
   request.nextUrl.pathname = `/${locale}${pathname}`;
 
   const response = NextResponse.redirect(request.nextUrl);
+
   // e.g. incoming request is /blog
   // The new URL is now /en/blog
   return response;
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next|public|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico)$).*)",
-  ],
+  matcher: ["/((?!_next|favicon.ico).*)"],
 };
