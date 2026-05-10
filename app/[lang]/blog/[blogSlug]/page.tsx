@@ -1,10 +1,8 @@
-import React from "react";
-
-import { Locale, hasLocale } from "@/i18n-config";
+import { i18n, Locale, hasLocale } from "@/i18n-config";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
-import { loadBlogPost } from "../../helpers/file-helpers";
+import { getBlogPostList, loadBlogPost } from "../../helpers/file-helpers";
 import COMPONENT_MAP from "../../helpers/mdx-components";
 
 import BlogHero from "../../components/BlogHero/BlogHero";
@@ -12,7 +10,20 @@ import BlogHero from "../../components/BlogHero/BlogHero";
 import styles from "./blogSlug.module.css";
 
 export async function generateStaticParams() {
-  return [{ lang: "en" }, { lang: "ja" }];
+  const params = [];
+
+  for (const locale of i18n.locales) {
+    const posts = await getBlogPostList(locale);
+
+    for (const post of posts) {
+      params.push({
+        locale,
+        slug: post.slug,
+      });
+    }
+  }
+
+  return params;
 }
 
 export async function generateMetadata({
