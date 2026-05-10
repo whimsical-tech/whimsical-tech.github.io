@@ -1,5 +1,6 @@
 import React from "react";
 import { Code } from "bright";
+import theme from "./theme.js";
 
 import styles from "./CodeSnippet.module.css";
 
@@ -8,7 +9,7 @@ interface CodeSnippetProps {
 }
 
 function CodeSnippet({ className, ...props }: CodeSnippetProps) {
-  return <Code {...props} className={styles.wrapper} />;
+  return <Code {...props} theme={theme} className={styles.wrapper} />;
 }
 
 export default CodeSnippet;

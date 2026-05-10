@@ -5,7 +5,7 @@ publishedOn: "2026-05-03T12:00:00-0400"
 ---
 
 In this guide you will learn:
-- How to implement translations application-wide
+- How to implement translations application-wide, server or client-side
 - How to format date and currency according to country
 - How to add props and html to your translated strings
 
@@ -83,7 +83,8 @@ Directly under the app folder, create a folder called [lang].
 The brackets are important, they specify lang is a dynamic parameter.
 Inside [lang] you should have all of your pages.
 
-there is a screenshot of how the directory should look like 2026-05-06 23:09 more or less
+![This is how the directory currently looks like](../../public/pamono.png "This is how the directory currently looks like")
+![example](https://i.guim.co.uk/img/media/3c26919421823111042094ac6329c32909b0687e/0_269_4465_3572/master/4465.jpg?width=620&dpr=1&s=none&crop=5%3A4 "legend")
 
 Right now your app is only accessible if you manually add a parameter in the url.
 To fix this, let's create a proxy.ts file in the same level as your app folder.
@@ -244,7 +245,7 @@ export default function LanguageSwitcher() {
           </option>
         ))}
       </select>
-      {isPending && <span>Switching...</span>}
+      {isPending && <span>切り替え中</span>}
     </div>
   );
 }
@@ -252,12 +253,11 @@ export default function LanguageSwitcher() {
 
 For our example repository, I am importing this component in the SiteHeader.tsx, right after the last ```<Link>```.
 
-(screenshot of how it looks in the UI)
+![Profile](../../public/languageSwitcher.png "User Avatar")
 
-If you test you should be able to see the url changing.
-But we still haven't done anything about our hardcoded strings.
-Let us finally handle that.
+Go ahead and try your new LanguageSwitcher, and you should be able to see the url changing!
 
+### From hardcoded strings to text fetched from translation files
 When using translations in Next.js, you can load them client-side or server-side.
 Server-side is generally preferable since it is instantaneous, so I'll show it first.
 
@@ -369,12 +369,15 @@ export function I18nProvider({
 
 layout.tsx
 ```tsx
+  const { lang } = await params;
+  const currentLang = lang as Locale;
+  return (
     <html lang={lang} className={notoSansJp.variable}>
-      <body>
-        <!-- add the provider to the main layout.tsx of your project -->
-        <I18nProvider lang={lang}>{children}</I18nProvider>
+      <body> <!-- add the provider to the main layout.tsx of your project -->
+        <I18nProvider lang={currentLang}>{children}</I18nProvider>
       </body>
     </html>
+  );
 ```
 
 ```LastVisitNotice.tsx``` is a client component, so it is the perfect use case to test our provider.
