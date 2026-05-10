@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/dictionaries";
-import { hasLocale } from "@/i18n-config";
+import { Locale, hasLocale } from "@/i18n-config";
 import styles from "./Timeline.module.css";
 
 export default async function Timeline({
   params,
 }: {
-  params: Promise<{ lang: string }>;
+  params: Promise<{ lang: Locale }>;
 }) {
   const { lang } = await params;
 
