@@ -3,6 +3,9 @@
   "navbar.intro": "紹介",
   "navbar.skills": "スキル",
   "navbar.contact": "お問い合わせ",
+  "navbar.blog": "ブログ",
+  "blog.latest": "最新の記事",
+  "blog.continue": "記事を読む",
   "intro.slides": [
     {
       "segments": [

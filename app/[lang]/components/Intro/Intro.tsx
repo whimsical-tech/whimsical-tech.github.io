@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { getDictionary, hasLocale } from "@/dictionaries";
+import { getDictionary } from "@/dictionaries";
+import { hasLocale } from "@/i18n-config";
 import IntroSlideshow from "./IntroSlideshow";
 import styles from "./Intro.module.css";
 import Sun from "../Sun/Sun";

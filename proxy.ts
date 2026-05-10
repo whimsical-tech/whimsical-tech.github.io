@@ -1,14 +1,7 @@
-import { match } from "@formatjs/intl-localematcher";
 import { NextRequest, NextResponse } from "next/server";
-import Negotiator from "negotiator";
+import { i18n, Locale } from "@/i18n-config";
 
-let headers = { "accept-language": "en,en;q=0.5" };
-let locales = ["en", "jp"];
-let languages = new Negotiator({ headers }).languages();
-
-let defaultLocale = "en";
-
-//match(languages, locales, defaultLocale);
+const { defaultLocale, locales } = i18n;
 
 function getLocale(request: NextRequest) {
   const acceptLanguage = request.headers.get("accept-language");
@@ -19,27 +12,33 @@ function getLocale(request: NextRequest) {
     return code.substring(0, 2);
   });
 
-  const matched = preferredLocales.find((lang) => locales.includes(lang));
+  const matched = preferredLocales.find((lang) =>
+    locales.includes(lang as Locale),
+  );
+
   return matched ?? defaultLocale;
 }
 
 export function proxy(request: NextRequest) {
-  // Check if there is any supported locale in the pathname
+  // Check if there is a supported locale in the pathname
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
-
   if (pathnameHasLocale) return;
 
   // Redirect if there is no locale
   const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
-  // e.g. incoming request is /products
-  // The new URL is now /en/products
-  return NextResponse.redirect(request.nextUrl);
+
+  const response = NextResponse.redirect(request.nextUrl);
+  // e.g. incoming request is /blog
+  // The new URL is now /en/blog
+  return response;
 }
 
 export const config = {
-  matcher: ["/((?!_next|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next|public|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico)$).*)",
+  ],
 };
