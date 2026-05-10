@@ -18,7 +18,7 @@ export async function generateStaticParams() {
     for (const post of posts) {
       params.push({
         lang: locale,
-        slug: post.slug,
+        blogSlug: post.slug,
       });
     }
   }
