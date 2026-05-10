@@ -83,8 +83,7 @@ Directly under the app folder, create a folder called [lang].
 The brackets are important, they specify lang is a dynamic parameter.
 Inside [lang] you should have all of your pages.
 
-![This is how the directory currently looks like](../../public/pamono.png "This is how the directory currently looks like")
-![example](https://i.guim.co.uk/img/media/3c26919421823111042094ac6329c32909b0687e/0_269_4465_3572/master/4465.jpg?width=620&dpr=1&s=none&crop=5%3A4 "legend")
+![This is how the directory currently looks like](../../public/directory.png "This is how the directory currently looks like")
 
 Right now your app is only accessible if you manually add a parameter in the url.
 To fix this, let's create a proxy.ts file in the same level as your app folder.
@@ -253,7 +252,7 @@ export default function LanguageSwitcher() {
 
 For our example repository, I am importing this component in the SiteHeader.tsx, right after the last ```<Link>```.
 
-![Profile](../../public/languageSwitcher.png "User Avatar")
+![LanguageSwitcher implemented in UI](../../public/languageSwitcher.png "LanguageSwitcher implemented in UI")
 
 Go ahead and try your new LanguageSwitcher, and you should be able to see the url changing!
 
@@ -309,24 +308,22 @@ export default function Home({
       <SiteHeader params={params} active="home" />
       ...
 ```
-Test! Your first translated string should now be visible.
-(show UI of working translations)
+Your first translated string should now be visible.
 
 Don't forget to also add locale to all links.
 In SiteHeader.tsx that can be done by adding lang to the href.
 ```tsx
- <Link href={`/${lang}/`} className={styles.brand}>
-         ...
-        </Link>
-<nav className={styles.nav} aria-label="主要ナビゲーション">
-          <Link
-            href={`/${lang}/`} > <!-- here -->
-           ...
-          </Link>
-          <Link
-            href={`/${lang}/about`} 
-           ...
-        </nav>
+  <Link href={`/${lang}/`} className={styles.brand}>
+    ...
+  </Link>
+  <nav className={styles.nav} aria-label="主要ナビゲーション">
+    <Link
+      href={`/${lang}/`} > <!-- here -->
+      ...
+    </Link>
+    <Link
+      href={`/${lang}/about`} 
+      ...
 ```
 You can follow this pattern of taking the language from the params to apply translations and to add locale to links.
 Do this in all server components and we are done!
@@ -425,8 +422,8 @@ There is more than one way to handle this. One possibility is to use template st
 "lastVisit.mainText": "前回のご訪問は {{date}} でした。その後、新着物件が {{count}} 件 加わっています。一覧では NEW の付いた物件を先頭に並べています。"
 ```
 
-(the below should be in its own box if possible)
-P.S.: You will also notice I changed ```function formatVisitDate()``` to accept a locale parameter.
+**Displaying date in local format**
+You will also notice I changed ```function formatVisitDate()``` to accept a locale parameter.
 I also moved the function inside the component so we can access the ```t()``` and added a correspondent string to "不明な日時" in the json files.
 ```ts
 function formatVisitDate(locale: string) {
@@ -452,11 +449,10 @@ The import is also updated to:
 import { Trans, useTranslation } from "react-i18next";
 ```
 
-
 Template strings work great if all you want is to add some props to your translation, but you might have noticed I removed the ```<strong>``` tags from this solution.
 That's because normally React would not be able to read tags from the text, and we would have to add something like ```dangerouslySetInnerHTML```, which I prefer to avoid.
 
-If there is a need for html in the strings, we can use a handy component from ```react-i18next``` library called ```Trans```.
+If there is a need for html in the strings, we can use a handy component from ```react-i18next``` library called ```Trans```[^1].
 Go ahead and replace the paragraph with the code below:
 
 ```tsx
@@ -468,7 +464,8 @@ Go ahead and replace the paragraph with the code below:
   }}
 />
 ```
-(add a notice "somewhere" that Trans can only be used client-side)
+[^1]: Trans can only be used in client components.
+
 Now we can use the HTML tags directly in the translation files!
 
 ja.json
@@ -489,7 +486,7 @@ Even in the example above, you don't need to know both English and Japanese to r
 And in other languages the structure could vary even more widely, and perhaps the prop should even start the sentence.
 To make sure to account for all differences and understand them at a glance, make sure to use Trans or a template string when there are props involved!
 
-Naming things
+**Naming things**
 As I was focused on explaining different scenarios, my current locale files only have 4 keys.
 ```
 {
@@ -523,7 +520,7 @@ Something like:
     - aboutPage.json
     - ...
 
-Bonus: Currency
+**Bonus: Currency**
 Currency is a complicated topic that deserves its own article.
 
 In a real world scenario, you will want to track currency and language separately.
