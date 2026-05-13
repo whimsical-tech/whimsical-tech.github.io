@@ -4,10 +4,10 @@ abstract: As Japan becomes more and more globalized, the demand for multi-langua
 publishedOn: "2026-05-10T12:00:00-0400"
 ---
 
-In this guide you will learn:
-- How to implement translations application-wide, server or client-side
-- How to format date and currency according to country
-- How to add props and html to your translated strings
+> In this guide you will learn:
+> - How to implement translations application-wide, server or client-side
+> - How to format date and currency according to country
+> - How to add props and html to your translated strings
 
 Hello, Konnichiwa, Olá, Hallo.
 
@@ -20,7 +20,7 @@ Are you ready to offer the optimal user experience in your Next.js app, and offe
 We will also be using Typescript to ensure type safety.
 Then, let's dive in!
 
-**First, let's orientate ourselves**
+## First, let's orientate ourselves
 
 To know where to go we first must know where we are.
 
@@ -30,7 +30,9 @@ Of course, if you want to start your own project from zero, or if you already ha
 
 We will add English option to a Japanese application. If you need more languages or other languages in your app, the process is fairly similar, and it will be explained as well.
 
-As you might have expected, the first thing we have to do is installing some packages.
+## Basic settings
+
+As you might have expected, we begin by installing some packages.
 
 `npm install i18next react-i18next`
 
@@ -253,7 +255,7 @@ For our example repository, I am importing this component in the SiteHeader.tsx,
 
 Go ahead and try your new LanguageSwitcher, and you should be able to see the url changing!
 
-### From hardcoded strings to text fetched from translation files
+## From hardcoded strings to text fetched from translation files
 When using translations in Next.js, you can load them client-side or server-side.
 Server-side is generally preferable since it is instantaneous, so I'll show it first.
 
@@ -419,7 +421,8 @@ There is more than one way to handle this. One possibility is to use template st
 "lastVisit.mainText": "前回のご訪問は {{date}} でした。その後、新着物件が {{count}} 件 加わっています。一覧では NEW の付いた物件を先頭に並べています。"
 ```
 
-**Displaying date in local format**
+**_Displaying date in local format_**
+
 You will also notice I changed ```function formatVisitDate()``` to accept a locale parameter.
 I also moved the function inside the component so we can access the ```t()``` and added a correspondent string to "不明な日時" in the json files.
 ```ts
@@ -449,7 +452,8 @@ import { Trans, useTranslation } from "react-i18next";
 Template strings work great if all you want is to add some props to your translation, but you might have noticed I removed the ```<strong>``` tags from this solution.
 That's because normally React would not be able to read tags from the text, and we would have to add something like ```dangerouslySetInnerHTML```, which I prefer to avoid.
 
-If there is a need for html in the strings, we can use a handy component from ```react-i18next``` library called ```Trans```[^1].
+If there is a need for html in the strings, we can use a handy component from ```react-i18next``` library called ```Trans```.
+**Trans can only be used in client components.**
 Go ahead and replace the paragraph with the code below:
 
 ```tsx
@@ -461,7 +465,6 @@ Go ahead and replace the paragraph with the code below:
   }}
 />
 ```
-[^1]: Trans can only be used in client components.
 
 Now we can use the HTML tags directly in the translation files!
 
@@ -483,8 +486,8 @@ Even in the example above, you don't need to know both English and Japanese to r
 And in other languages the structure could vary even more widely, and perhaps the prop should even start the sentence.
 To make sure to account for all differences and understand them at a glance, make sure to use Trans or a template string when there are props involved!
 
-**Naming things**
-As I was focused on explaining different scenarios, my current locale files only have 4 keys.
+## Naming things
+As I was focused on explaining how to handle different scenarios, my current locale files only have 4 keys.
 ```
 {
   "lastVisit": {
@@ -493,13 +496,16 @@ As I was focused on explaining different scenarios, my current locale files only
   },
   "slogan": "日本各地の売買・賃貸をワンストップでサポートします",
   "unknownDate": "不明な日時"
-}```
+}
+```
+
+It's simple now, but as we add more and more strings, it can get quite chaotic, so let's think about a few different approaches.
 
 There is no right or wrong way to set up the locale files, it varies depending on the needs of your application.
-Of course, you want to make sure all keys are unique and easy to identify. "mainText", for example, should not be a key by itself. mainText of what?
+One thing you'll want to make sure, is that all keys are unique and easy to identify. "mainText", for example, should not be a key by itself, as one might wonder: mainText of what?
 
 It is a good idea to keep all or most translations nested, like in lastVisit.
-You can see a more extended example of this in the final version of the project, where I translated all strings.
+You can see a more extended example of this in the final version of the project, where all strings are translated.
 
 But you don't need to have only 1 file per language.
 Especially if your project is large, you may want folders for each language, and instead of nesting translations in a object, you may want each locale file to correspond to a page or component in your application.
@@ -517,7 +523,8 @@ Something like:
     - aboutPage.json
     - ...
 
-**Bonus: Currency**
+## Bonus: Currency
+
 Currency is a complicated topic that deserves its own article.
 
 In a real world scenario, you will want to track currency and language separately.

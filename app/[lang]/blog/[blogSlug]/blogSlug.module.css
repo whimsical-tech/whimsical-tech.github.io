@@ -6,7 +6,6 @@
 
 .page {
   position: relative;
-  display: grid;
   line-height: 1.8;
   letter-spacing: 0.01em;
   max-width: var(--content-width);
@@ -14,6 +13,18 @@
   padding: 0 16px;
 }
 
-.page > * {
-  grid-column: 2;
+.page img {
+  max-width: var(--content-width);
+}
+
+.page blockquote {
+  border-left: var(--emphasis) 4px solid;
+  padding-left: 16px;
+  margin-bottom: 32px;
+}
+
+@media screen and (max-width: 800px) {
+  .page img {
+    max-width: 100%;
+  }
 }
