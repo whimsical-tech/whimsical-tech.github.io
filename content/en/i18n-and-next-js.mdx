@@ -7,9 +7,8 @@ publishedOn: "2026-05-17T12:00:00-0400"
 > In this guide you will learn:
 > - How to implement translations application-wide, server or client-side
 > - How to add props and html to your translated strings
-> - How to split, name and organize translated strings
-> - Notes on date and currency format
-> - ...and more!
+> - Tips on naming, organizing and splitting translated strings <br/>
+> ...and more!
 
 Hello, こんにちは, Olá, Hallo.
 
@@ -27,6 +26,14 @@ It is entirely in Japanese with hardcoded strings. We will also be using Typescr
 Of course, if you want to start your own project from zero, or if you already have your own application, you'll be able to easily follow along as well.
 
 We will add English option to this application. If you need more languages or other languages in your app, the process is fairly similar, and it will be explained as well.
+
+### Note on the repository branches
+P.S.: you can skip this if you are not using the suggested repo
+- _initial_: this is the branch where you will find the untranslated project. start here if you want to follow the tutorial from zero.
+- _master_: here the repository is 100% translated. use this branch when you want to see examples of a complete project in i18n.
+- _test_: this branch strictly follows the article to the end. it does not implement translations or changes beyond the ones explicitly mentioned here.
+
+This project was not easy to fully translate, so if you're a beginner, consider it a challenge to get it to 100% and don't feel bad if you're stuck and need to look at the solution.
 
 ## Basic settings
 
@@ -139,17 +146,19 @@ There is a lang attribute in the HTML, and you no longer want this value to be s
 From now we will read locale from the url params like this:
 
 ```tsx
-export default async function RootLayout({ // asyncにする
+export default async function RootLayout({ 
   children,
-  params, // 新しい
+  params, 
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>; // 新しい
+  params: Promise<{ lang: Locale }>;
 }>) {
-  const { lang } = await params; // 新しい
+  const { lang } = await params;
   return (
     <html lang={lang} ...
 ```
+
+The important things to notice is to make the function async, to add params to props and to get lang from awaited params.
 
 You can check if it's working by inspecting the live code in the browser and checking if the ```<html lang="">``` is changing as you change language in the url.
 Only languages specified in your config file will be valid.
@@ -163,9 +172,7 @@ export async function generateStaticParams() {
 
 We are getting there!
 
-Next, we want to offer our users an in-built way to change languages.
-Most people will not simply try to change the URL!
-So let's create a locale switcher.
+Next, we want to offer our users an in-built way to change languages, so let's create a locale switcher.
 Since I promised to help even if you want to add multiple languages, a dropdown with options is a scalable choice.
 I added it to components folder.
 
@@ -175,53 +182,29 @@ I added it to components folder.
 import { useRouter, usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { Locale } from "@/i18n-config";
-import { initReactI18next, useTranslation } from "react-i18next";
-import i18next from "i18next";
-import en from "../../locales/en.json";
-import ja from "../../locales/ja.json";
-
+import { useTranslation } from "react-i18next";
 
 const locales: Record<Locale, { name: string; flag: string }> = {
   en: { name: "English", flag: "🇬🇧" },
   ja: { name: "日本語", flag: "🇯🇵" },
 };
 
-
-if (!i18next.isInitialized) {
-  i18next.use(initReactI18next).init({
-    resources: {
-      en: { locale: en },
-      ja: { locale: ja },
-    },
-    fallbackLng: "en",
-    ns: ["locale"],
-    defaultNS: "locale",
-    interpolation: {
-      escapeValue: false,
-    },
-  });
-}
-
-
 export default function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
+  const { i18n } = useTranslation();
   const [isPending, startTransition] = useTransition();
 
-  const currentLocale: Locale = pathname.startsWith("/ja") ? "ja" : "en";
+  const currentLocale = i18n.language;
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newLocale = event.target.value as Locale;
 
-    startTransition(() => {
-      const segments = pathname.split("/").filter(Boolean);
+    startTransition(async () => {
+      await i18n.changeLanguage(newLocale);
 
-      if (currentLocale === newLocale) return;
-      if (segments[0] === currentLocale) segments[0] = newLocale;
-
-      const newPath = `${segments.join("/")}`;
-
-      router.replace(newPath);
+      const newPath = pathname.replace(`/${currentLocale}`, `/${newLocale}`);
+      router.push(newPath);
     });
   };
 
@@ -241,7 +224,17 @@ export default function LanguageSwitcher() {
           </option>
         ))}
       </select>
-      {isPending && <span>切り替え中</span>}
+      <span
+        style={{
+          display: "inline-block",
+          width: "16px",
+          height: "16px",
+          visibility: isPending ? "visible" : "hidden",
+        }}
+        aria-hidden={!isPending}
+      >
+        {isPending && <div className="spinner" />}
+      </span>
     </div>
   );
 }
@@ -277,11 +270,10 @@ In ja.json, please write:
 
 And in the tsx, replace the hardcoded string with  ```{t["slogan"]}```
 You can name "t" anything you want. Maybe you prefer to use the full word "translate".
-Make the following changes to ```SiteHeader.tsx``` or whichever component you are adding the translations to.
+Now let's make the changes to whichever component you are adding the translations to.
 Remember, it must be a Server component!
 
-Since we are loading locale from params, first we want to get it on the parent page.
-
+Since we need to extract the locale from params, first we want to retrieve it on the parent page.
 ```tsx
 export default function Home({
   params,
@@ -293,43 +285,46 @@ export default function Home({
 
   return (
     <div className={styles.page}>
-      <SiteHeader  />
+      <SiteHeader active="home" lang={lang} t={t}  />
       ...
 ```
 
-Then we pass it to the component where we want to access the strings.
+Then we pass it to the component where the translations are used, in our case ```SiteHeader.tsx```.
 
 ```tsx
-export async function SiteHeader({ }:
- {
+export async function SiteHeader({
+  active,
+  lang,
+  t,
+}: {
+  active: NavKey;
+  lang: Locale;
   t: Awaited<ReturnType<typeof getTranslation>>;
-}) {
+}
 ```
 
-Your first translated string should now be visible.
+In most cases, you will not need to pass both the locale and the getTranslation props, only the latter should suffice.
+However, since SiteHeader.tsx contains navigation links, we need to add lang to construct localized URLs:
+Remember to apply this pattern to any component containing links that need to respect the current locale.
 
-Don't forget to also add locale to all links.
-In SiteHeader.tsx that can be done by adding lang to the href.
 ```tsx
   <Link href={`/${lang}/`} className={styles.brand}>
     ...
   </Link>
   <nav className={styles.nav} aria-label="主要ナビゲーション">
     <Link
-      href={`/${lang}/`} > <!-- here -->
+      href={`/${lang}/`} >
       ...
     </Link>
     <Link
       href={`/${lang}/about`} 
       ...
 ```
-You can follow this pattern of taking the language from the params to apply translations and to add locale to links.
-Do this in all server components and we are done!
-That's the oversimplified version.
+You should now see the localized strings and maintain correct locale while navigating.
+The oversimplified version is: do this for all server components and we are done!
 
-Now, let me show you how to add the translations in client components.
-Remember this is not the ideal solution as they might slug behind the server components and cause hydration issues.
-Try to load translations in your server components as much as possible!
+### Client side
+For interactive client components where server rendering is not possible, we need to use a different pattern.
 
 If you are already familiar with React Context, you'll know it's a way to easily provide information across your app without having to endless pass props along the tree.
 In similar fashion, we will use a Provider in layout.tsx to pass the language along the entire app.
@@ -362,13 +357,14 @@ export function I18nProvider({
 
 ```
 
-layout.tsx
+Then, add the provider to the main layout.tsx of your project.
+
 ```tsx
   const { lang } = await params;
   const currentLang = lang as Locale;
   return (
     <html lang={lang} className={notoSansJp.variable}>
-      <body> <!-- add the provider to the main layout.tsx of your project -->
+      <body> 
         <I18nProvider lang={currentLang}>{children}</I18nProvider>
       </body>
     </html>
@@ -400,65 +396,23 @@ Don't forget the import:
 import { useTranslation } from "react-i18next";
 ```
 
-### Note on client component loading
-As mentioned, when loading translations in client side, there is often a small delay.
-Although this can be optimized it can hardly be entirely avoided.
-One way to mitigate the slowness is to implement a loading state. There are different methods to do so and you can see an example in LastVisitNotice.tsx.
+### Client-side loading considerations
+A Flash of Untranslated Content (FOUC) can occur when translations are loaded on the client-side.
+This is bad UX.
+To prevent it, implement a loading state while the locale is being resolved. You can see a demonstration in `LastVisitNotice.tsx`.
 
-```tsx
-   {visit === "loading" ? (
-        <div className={styles.skeleton}>
-          <div className={styles.skeletonLine} />
-          <div className={styles.skeletonLine} />
-          <div className={styles.skeletonMuted} />
-        </div>
-      ) 
-```
+![If you remove the loading state from LastVisitNotice, you will see this bad example of UI when loading the page.](../../badUi.png "If you remove the loading state from LastVisitNotice, you will see this bad example of UI when loading the page.")
+_Even though this page is supposed to show in English, Japanese text may show for a second when loading._
 
-Plus the accompanying styles.
-```css 
+<br/>
 
-.skeleton {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+![With the loading state, you see a skeleton of the component instead, and afterwards the expected strings.](../../loading.png "")
+_With the loading state, you see a skeleton of the component instead, and afterwards the expected strings._
 
-.skeletonLine {
-  height: 1rem;
-  background: linear-gradient(90deg, #e2e8f0 25%, #cbd5e1 50%, #e2e8f0 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 0.25rem;
-}
+<br/>
+___
 
-.skeletonLine:first-child {
-  width: 80%;
-}
-
-.skeletonLine:nth-child(2) {
-  width: 100%;
-}
-
-.skeletonMuted {
-  height: 0.75rem;
-  width: 60%;
-  background: #e2e8f0;
-  border-radius: 0.25rem;
-  margin-top: 0.5rem;
-}
-
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-```
+<br/>
 
 This concludes the basic tutorial for both client and server components.
 By replicating the steps above accordingly, you should be able to deliver multi-language applications from scratch, or apply the changes to your current Next.js 16 project.
