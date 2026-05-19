@@ -418,6 +418,7 @@ This concludes the basic tutorial for both client and server components.
 By replicating the steps above accordingly, you should be able to deliver multi-language applications from scratch, or apply the changes to your current Next.js 16 project.
 But we can still go even deeper, because language changes do not stop at words alone.
 
+### Adding props and html to translations
 For this next example let's continue in ```LastVisitNotice.tsx``` and take a look at the remaining untranslated string.
 It is much more complex than the strings we've translated so far. It contains two props and three ```<strong>``` tags.
 
@@ -490,16 +491,18 @@ en.json
  "mainText": "Your last visit was <strong>{{date}}</strong>. Since then, <strong>{{count}} new listings</strong> have been added. In the list, listings with <strong>NEW</strong> are displayed at the top."
 ```
 
+### Splitting translation strings
 You might be thinking, can't I just use multiple strings instead?
 Perhaps you could have used a string for "Your last visit was  ", then show the prop as usual in the tsx, then continue with another string ". Since then, ", then the next prop, and so on.
-Then there is no need for template strings or external components.
-However, not only is that more complicated and more difficult to read, it can also easily introduce errors as different languages have different flows and word order.
-Even in the example above, you don't need to know both English and Japanese to realize the first full stop comes in English right after the prop, where as in Japanese there is one more word.
-And in other languages the structure could vary even more widely, and perhaps the prop should even start the sentence.
-To make sure to account for all differences and understand them at a glance, make sure to use Trans or a template string when there are props involved!
+By doing that, there is no need for template strings or external components.
+
+This is indeed the pattern for server-side translations, since ```<Trans>``` is not available.
+However, for client side there is no need to split translations like that. not only is that more complicated and more difficult to read, it can also easily introduce errors as different languages have different flows and word order.
+In the example above, the first full stop comes in English right after the value, whereas in Japanese there is one more word. In other languages the structure could vary even further, and perhaps the value would start the sentence.
+To account for all differences and understand them at a glance, make sure to use Trans or a template string for client components.
 
 ## Naming things
-As I was focused on explaining how to handle different scenarios, my current locale files only have 4 keys.
+If so far you have only followed the tutorial without adding extra translations, your current locale files only hold 4 keys.
 ```
 {
   "lastVisit": {
@@ -511,16 +514,16 @@ As I was focused on explaining how to handle different scenarios, my current loc
 }
 ```
 
-It's simple now, but as we add more and more strings, it can get quite chaotic, so let's think about a few different approaches.
+It's simple now, but as we add more and more strings, it can get quite chaotic.
 
-There is no right or wrong way to set up the locale files, it varies depending on the needs of your application.
-One thing you'll want to make sure, is that all keys are unique and easy to identify. "mainText", for example, should not be a key by itself, as one might wonder: mainText of what?
+There is no single correct way to set up the locale files, it varies depending on the needs of your application.
+The most important rule is uniqueness and context. Avoid generic keys like "mainText" in isolation. Main text of what?
+By nesting it in lastVisit, it becomes clear and self-documenting.
 
-It is a good idea to keep all or most translations nested, like in lastVisit.
-You can see a more extended example of this in the final version of the project, where all strings are translated.
+You can see a more extended example of this in the final version of the project (master branch), where all strings are translated.
 
-But you don't need to have only 1 file per language.
-Especially if your project is large, you may want folders for each language, and instead of nesting translations in a object, you may want each locale file to correspond to a page or component in your application.
+So far in the tutorial we have loaded all keys from either en.json or ja.json, but large applications often benefit from multiple files per locale.
+You may want folders for each language, and each locale file may correspond to a page or component in your application.
 Something like:
 
 - locales
@@ -534,6 +537,10 @@ Something like:
     - propertyDetail.json
     - aboutPage.json
     - ...
+
+To implement that, all you have to do is include the new files in the i18n initialization, which we are doing in the I18nProvider.
+
+
 
 ## Bonus: Currency
 
