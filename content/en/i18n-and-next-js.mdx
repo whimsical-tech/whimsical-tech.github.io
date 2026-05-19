@@ -1,23 +1,21 @@
 ---
 title: "How to add i18n to Next.js 16: a step-by-step, complete guide"
 abstract: As Japan becomes more and more globalized, the demand for multi-language applications will only increase. If you're still new to how i18n works, particularly in the Next.js environment, it can be quite daunting. In this article, I've broken down the process step by step, and you'll be ready to handle international applications!
-publishedOn: "2026-05-10T12:00:00-0400"
+publishedOn: "2026-05-17T12:00:00-0400"
 ---
 
 > In this guide you will learn:
 > - How to implement translations application-wide, server or client-side
-> - How to format date and currency according to country
 > - How to add props and html to your translated strings
+> - How to split, name and organize translated strings
+> - Notes on date and currency format
+> - ...and more!
 
-Hello, Konnichiwa, Olá, Hallo.
+Hello, こんにちは, Olá, Hallo.
 
 It is often a relief to see things written in a language you can read.
-While automated translations are increasingly common, they are still inferior to having dedicated translations.
-This is especially true when dealing with languages that significantly differ from each other, such as English and Japanese.
+Are you ready to offer the optimal user experience in your Next.js app and integrate multi-language support?
 
-Are you ready to offer the optimal user experience in your Next.js app, and offer multi-language support?
-
-We will also be using Typescript to ensure type safety.
 Then, let's dive in!
 
 ## First, let's orientate ourselves
@@ -25,14 +23,14 @@ Then, let's dive in!
 To know where to go we first must know where we are.
 
 For this tutorial we will use [this repository](https://github.com/whimsical-tech/i18n-nextjs-tutorial) as a starting point.
-It is entirely in Japanese with hardcoded strings.
+It is entirely in Japanese with hardcoded strings. We will also be using Typescript to ensure type safety.
 Of course, if you want to start your own project from zero, or if you already have your own application, you'll be able to easily follow along as well.
 
-We will add English option to a Japanese application. If you need more languages or other languages in your app, the process is fairly similar, and it will be explained as well.
+We will add English option to this application. If you need more languages or other languages in your app, the process is fairly similar, and it will be explained as well.
 
 ## Basic settings
 
-As you might have expected, we begin by installing some packages.
+As you might have expected, the first thing we have to do is installing some packages.
 
 `npm install i18next react-i18next`
 
@@ -257,7 +255,7 @@ Go ahead and try your new LanguageSwitcher, and you should be able to see the ur
 
 ## From hardcoded strings to text fetched from translation files
 When using translations in Next.js, you can load them client-side or server-side.
-Server-side is generally preferable since it is instantaneous, so I'll show it first.
+Server-side is generally preferable since it is instantaneous, so let's talk first about this method.
 
 I will use SiteHeader.tsx as starting point, you can pick any clearly visible string from your own project.
 
@@ -282,19 +280,7 @@ You can name "t" anything you want. Maybe you prefer to use the full word "trans
 Make the following changes to ```SiteHeader.tsx``` or whichever component you are adding the translations to.
 Remember, it must be a Server component!
 
-```tsx
-export async function SiteHeader({
-  active,
-  params,
-}: {
-  active: NavKey;
-  params: Promise<{ lang: Locale }>;
-}) {
-  const { lang } = await params;
-  const t = await getTranslation(lang);
-```
-
-In ```[lang]/page.tsx```, make sure to add params to SiteHeader, like this:
+Since we are loading locale from params, first we want to get it on the parent page.
 
 ```tsx
 export default function Home({
@@ -302,11 +288,24 @@ export default function Home({
 }: {
   params: Promise<{ lang: Locale }>;
 }) {
+  const { lang } = await params;
+  const t = await getTranslation(lang);
+
   return (
     <div className={styles.page}>
-      <SiteHeader params={params} active="home" />
+      <SiteHeader  />
       ...
 ```
+
+Then we pass it to the component where we want to access the strings.
+
+```tsx
+export async function SiteHeader({ }:
+ {
+  t: Awaited<ReturnType<typeof getTranslation>>;
+}) {
+```
+
 Your first translated string should now be visible.
 
 Don't forget to also add locale to all links.
@@ -401,6 +400,65 @@ Don't forget the import:
 import { useTranslation } from "react-i18next";
 ```
 
+### Note on client component loading
+As mentioned, when loading translations in client side, there is often a small delay.
+Although this can be optimized it can hardly be entirely avoided.
+One way to mitigate the slowness is to implement a loading state. There are different methods to do so and you can see an example in LastVisitNotice.tsx.
+
+```tsx
+   {visit === "loading" ? (
+        <div className={styles.skeleton}>
+          <div className={styles.skeletonLine} />
+          <div className={styles.skeletonLine} />
+          <div className={styles.skeletonMuted} />
+        </div>
+      ) 
+```
+
+Plus the accompanying styles.
+```css 
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeletonLine {
+  height: 1rem;
+  background: linear-gradient(90deg, #e2e8f0 25%, #cbd5e1 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.25rem;
+}
+
+.skeletonLine:first-child {
+  width: 80%;
+}
+
+.skeletonLine:nth-child(2) {
+  width: 100%;
+}
+
+.skeletonMuted {
+  height: 0.75rem;
+  width: 60%;
+  background: #e2e8f0;
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+```
 
 This concludes the basic tutorial for both client and server components.
 By replicating the steps above accordingly, you should be able to deliver multi-language applications from scratch, or apply the changes to your current Next.js 16 project.
