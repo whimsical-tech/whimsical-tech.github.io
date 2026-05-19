@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { I18nProvider } from "../I18nProvider";
-
+import { ThemeProvider } from "./components/ThemeProvider/ThemeProvider";
 import NavBar from "./components/NavBar/NavBar";
 import Script from "next/script";
 
@@ -38,10 +38,12 @@ export default async function RootLayout({
       </head>
       <body className="antialiased">
         <div id="banner"></div>
-        <I18nProvider lang={lang}>
-          <NavBar />
-          {children}
-        </I18nProvider>
+        <ThemeProvider>
+          <I18nProvider lang={lang}>
+            <NavBar />
+            {children}
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

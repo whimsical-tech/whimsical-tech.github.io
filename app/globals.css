@@ -35,11 +35,9 @@
   --color-foreground: var(--foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #222222;
-    --foreground: #fbf6f6;
-  }
+[data-theme="dark"] {
+  --background: #222222;
+  --foreground: #fbf6f6;
 }
 
 body {
@@ -84,6 +82,11 @@ button:active {
 
 a {
   color: var(--bright-orange);
+  text-decoration: underline;
+}
+
+a:hover {
+  color: var(--foreground);
 }
 
 .wrapper {

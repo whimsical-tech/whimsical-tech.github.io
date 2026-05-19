@@ -2,12 +2,15 @@ This is my whimsical portfolio, a [Next.js](https://nextjs.org) project bootstra
 
 ## Todo's
 
+High priority:
+
 - More fun animations and fun stuff in general (e.g. toggable music, sound effects, etc)
-- Multi-language support: English and Japanese are the most important, Portuguese and German next
-- Theme (color palette) is system-locked for now. Offer a theme switch.
-- Timeline is currently boring :( make it non boring
-- Explain deploy process
+- Replace current "contact" section with "about me". maybe remove timeline?
 - Basic accessibility tests were fine but i need to test for more specific cases (e.g. 400% zoom)
+
+Low priority:
+
+- Multi-language support: English and Japanese are the most important and already implemented, I'd like to add Portuguese and German next
 
 ## Getting Started
 

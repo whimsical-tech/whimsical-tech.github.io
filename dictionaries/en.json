@@ -4,6 +4,8 @@
   "navbar.skills": "Skills",
   "navbar.contact": "Contact",
   "navbar.blog": "Blog",
+  "navbar.darkMode": "Dark",
+  "navbar.lightMode": "Light",
   "blog.latest": "Latest Content",
   "blog.continue": "Continue reading",
   "intro.slides": [

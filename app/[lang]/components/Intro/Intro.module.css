@@ -9,9 +9,9 @@
 
 .controls {
   position: relative;
-  top: 25vh;
+  top: 24vh;
   left: 0;
-  width: 100%;
+  width: calc(100% + 2rem);
   z-index: 2;
 }
 
@@ -21,6 +21,7 @@
   font-size: 2rem;
   cursor: pointer;
   margin: 0 0.5rem;
+  padding: 1rem;
   border: 1px solid transparent;
 }
 

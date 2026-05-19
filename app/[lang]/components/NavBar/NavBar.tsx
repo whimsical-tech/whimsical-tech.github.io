@@ -6,9 +6,12 @@ import { useTranslation } from "next-i18next";
 import styles from "./NavBar.module.css";
 import { PiSunFill } from "react-icons/pi";
 import { BiWorld } from "react-icons/bi";
+import { FaSun } from "react-icons/fa6";
+import { FaMoon } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
 import FocusLock from "react-focus-lock";
 import { RemoveScroll } from "react-remove-scroll";
+import { useTheme } from "../ThemeProvider/ThemeProvider";
 import Link from "next/link";
 
 function Logo() {
@@ -133,6 +136,8 @@ export default function NavBar() {
     router.push(newPath);
   };
 
+  const { theme, toggleTheme } = useTheme();
+
   if (isLoading) {
     return (
       <nav className={styles.nav}>
@@ -209,12 +214,27 @@ export default function NavBar() {
                 {t("navbar.contact")}
               </a>
             </li>
+            <li className={styles.mobileOnly}>
+              <button onClick={toggleTheme} className={styles.themeSwitch}>
+                {theme === "light" ? <FaSun /> : <FaMoon />}
+                {theme === "light"
+                  ? t("navbar.lightMode")
+                  : t("navbar.darkMode")}
+              </button>
+            </li>
           </ul>
 
-          <button onClick={switchLang} className={styles.langSwitch}>
-            <BiWorld />
-            {currentLang === "en" ? "JP" : "EN"}
-          </button>
+          <div className={styles.buttonsContainer}>
+            <button onClick={toggleTheme} className={styles.themeSwitch}>
+              {theme === "light" ? <FaSun /> : <FaMoon />}
+              {theme === "light" ? t("navbar.lightMode") : t("navbar.darkMode")}
+            </button>
+
+            <button onClick={switchLang} className={styles.langSwitch}>
+              <BiWorld />
+              {currentLang === "en" ? "JP" : "EN"}
+            </button>
+          </div>
         </RemoveScroll>
       </FocusLock>
     </nav>
