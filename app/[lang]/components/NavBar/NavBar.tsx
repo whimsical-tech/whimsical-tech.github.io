@@ -11,6 +11,32 @@ import FocusLock from "react-focus-lock";
 import { RemoveScroll } from "react-remove-scroll";
 import Link from "next/link";
 
+function Logo() {
+  const [isIconShown, setIsIconShown] = useState(true);
+
+  return (
+    <p
+      onMouseEnter={() => setIsIconShown(false)}
+      onMouseLeave={() => setIsIconShown(true)}
+      className={styles.hi}
+    >
+      <span className={styles.heightEnforcer}>
+        {
+          //maybe change name reveal to be a tooltip?
+        }
+        Hi! I'm{" "}
+        {isIconShown ? (
+          <PiSunFill className={styles.wordplay} />
+        ) : (
+          <span className={styles.wordplay}>San</span>
+        )}{" "}
+      </span>
+      tana <br />
+      and this is Whimsical Tech
+    </p>
+  );
+}
+
 export default function NavBar() {
   const pathname = usePathname();
   const [active, setActive] = useState<string>("intro");
@@ -18,6 +44,7 @@ export default function NavBar() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -33,6 +60,10 @@ export default function NavBar() {
 
     return slug.split("/")[0] || "home";
   };
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     if (pathname === getHomepagePath()) {
@@ -95,35 +126,38 @@ export default function NavBar() {
 
   const switchLang = () => {
     const newLang = currentLang === "en" ? "ja" : "en";
+    setIsLoading(true);
 
     // Replace locale in path
     const newPath = pathname.replace(`/${currentLang}`, `/${newLang}`);
     router.push(newPath);
   };
 
-  const [isIconShown, setIsIconShown] = useState(true);
+  if (isLoading) {
+    return (
+      <nav className={styles.nav}>
+        <div className={styles.loadingSkeleton}>
+          {/*  <div className={styles.skeletonLogo} /> */}
+          <Logo />
+
+          <div className={styles.skeletonNavigation}>
+            <div className={styles.skeletonNavLinks}>
+              <div className={styles.skeletonLink} />
+              <div className={styles.skeletonLink} />
+              <div className={styles.skeletonLink} />
+              <div className={styles.skeletonLink} />
+            </div>
+
+            <div className={styles.skeletonLangSwitch} />
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className={`${styles.nav} ${isMenuOpen ? styles.menuOpen : ""}`}>
-      <p
-        onMouseEnter={() => setIsIconShown(false)}
-        onMouseLeave={() => setIsIconShown(true)}
-        className={styles.hi}
-      >
-        <span className={styles.heightEnforcer}>
-          {
-            //maybe change name reveal to be a tooltip?
-          }
-          Hi! I'm{" "}
-          {isIconShown ? (
-            <PiSunFill className={styles.wordplay} />
-          ) : (
-            <span className={styles.wordplay}>San</span>
-          )}{" "}
-        </span>
-        tana <br />
-        and this is Whimsical Tech
-      </p>
+      <Logo />
 
       <FocusLock
         disabled={!isMenuOpen}

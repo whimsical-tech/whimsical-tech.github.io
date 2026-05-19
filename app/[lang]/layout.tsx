@@ -30,10 +30,11 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <head>
+        {/*  temporarily hidden
         <Script
           src={`https://keepandroidopen.org/banner.js?lang=${lang}&size=mini&id=banner`}
           strategy="afterInteractive"
-        />
+        /> */}
       </head>
       <body className="antialiased">
         <div id="banner"></div>

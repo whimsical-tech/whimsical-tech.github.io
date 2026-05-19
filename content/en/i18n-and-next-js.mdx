@@ -5,7 +5,7 @@ publishedOn: "2026-05-17T12:00:00-0400"
 ---
 
 > In this guide you will learn:
-> - How to implement translations application-wide, server or client-side
+> - How to implement translations application-wide, server and client-side
 > - How to add props and html to your translated strings
 > - Tips on naming, organizing and splitting translated strings <br/>
 > ...and more!
@@ -503,7 +503,7 @@ To account for all differences and understand them at a glance, make sure to use
 
 ## Naming things
 If so far you have only followed the tutorial without adding extra translations, your current locale files only hold 4 keys.
-```
+```json
 {
   "lastVisit": {
     "dateWarning": "※表示される日付はいつも今日の日付です（デモ用のローカル表示）",
@@ -520,6 +520,8 @@ There is no single correct way to set up the locale files, it varies depending o
 The most important rule is uniqueness and context. Avoid generic keys like "mainText" in isolation. Main text of what?
 By nesting it in lastVisit, it becomes clear and self-documenting.
 
+I also recommend keeping the strings in alphabetical order. I used the website https://novicelab.org/jsonabc/ to easily reorder the files in English character order (A-Z).
+
 You can see a more extended example of this in the final version of the project (master branch), where all strings are translated.
 
 So far in the tutorial we have loaded all keys from either en.json or ja.json, but large applications often benefit from multiple files per locale.
@@ -528,19 +530,18 @@ Something like:
 
 - locales
   - en/
+    - aboutPage.json
     - lastVisitNotice.json
     - propertyDetail.json
-    - aboutPage.json
     - ...
   - jp/
+    - aboutPage.json
     - lastVisitNotice.json
     - propertyDetail.json
-    - aboutPage.json
     - ...
 
-To implement that, all you have to do is include the new files in the i18n initialization, which we are doing in the I18nProvider.
-
-
+To implement that, include the new files in the i18n initialization, which we are doing in the I18nProvider, and the settings in locales.ts.
+You'll also need to change getTranslation to look for the locale in the folder and accept a second parameter to load the intended file.
 
 ## Bonus: Currency
 

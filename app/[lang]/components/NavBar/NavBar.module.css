@@ -145,6 +145,93 @@ li .active::after {
   }
 }
 
+.loadingSkeleton {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--background);
+  position: relative;
+}
+
+.skeletonLogo {
+  min-width: 200px;
+  height: 1.6rem;
+  background-color: var(--foreground);
+  opacity: 0.1;
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeletonNavigation {
+  width: 100%;
+  display: flex;
+  margin-left: 20%;
+  justify-content: space-between;
+}
+
+.skeletonNavLinks {
+  display: flex;
+  gap: 2rem;
+  height: 1.6rem;
+  align-items: center;
+}
+
+.skeletonLink {
+  width: 90px;
+  height: 100%;
+  background-color: var(--foreground);
+  opacity: 0.1;
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeletonLangSwitch {
+  width: 3rem;
+  height: 3.5rem;
+  margin-right: 1rem;
+  background-color: var(--foreground);
+  opacity: 0.1;
+  border-radius: 0.2rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .skeletonNavLinks {
+    display: none;
+  }
+
+  .skeletonHamburger {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--foreground);
+    opacity: 0.1;
+    border-radius: 4px;
+    margin-left: auto;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .skeletonNavLinks {
+    display: flex;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .hamburger {
     display: block;
