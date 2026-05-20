@@ -154,7 +154,7 @@ li .active::after {
   display: none;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1024px) {
   .list {
     margin-top: 0;
     margin-left: 20%;
@@ -246,7 +246,7 @@ li .active::after {
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1024px) {
   .skeletonNavLinks {
     display: none;
   }
@@ -263,24 +263,24 @@ li .active::after {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1024px) {
   .skeletonNavLinks {
     display: flex;
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1024px) {
   .mobileOnly {
     display: block;
   }
 
   li.mobileOnly {
     position: absolute;
-    bottom: 4em;
+    bottom: 8em;
   }
 
   .themeSwitch {
-    width: 100%;
+    width: auto;
     height: auto;
     font-size: 1.5rem;
   }

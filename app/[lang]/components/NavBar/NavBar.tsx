@@ -232,7 +232,7 @@ export default function NavBar() {
 
             <button onClick={switchLang} className={styles.langSwitch}>
               <BiWorld />
-              {currentLang === "en" ? "JP" : "EN"}
+              {currentLang === "en" ? "EN" : "JP"}
             </button>
           </div>
         </RemoveScroll>
