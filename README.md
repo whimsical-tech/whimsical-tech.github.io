@@ -4,7 +4,6 @@ This is my whimsical portfolio, a [Next.js](https://nextjs.org) project bootstra
 
 High priority:
 
-- Bug: navigation menu does not close on mobile when accessing blog page
 - More fun animations and fun stuff in general (e.g. toggable music, sound effects, etc)
 - Replace current "contact" section with "about me". maybe remove timeline?
 - Basic accessibility tests were fine but i need to test for more specific cases (e.g. 400% zoom)

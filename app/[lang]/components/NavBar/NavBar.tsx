@@ -201,6 +201,7 @@ export default function NavBar() {
               <Link
                 className={active === "blog" ? styles.active : undefined}
                 href={`/${currentLang}/blog`}
+                onClick={() => setIsMenuOpen(false)}
               >
                 {t("navbar.blog")}
               </Link>
