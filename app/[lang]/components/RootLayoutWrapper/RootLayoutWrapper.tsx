@@ -27,10 +27,12 @@ export default function RootLayoutWrapper({
     return () => clearTimeout(timer);
   }, []);
 
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <>
-      {isLoading && <LoadingScreen />}
-
       <ThemeProvider>
         <I18nProvider lang={lang}>
           <NavBar />

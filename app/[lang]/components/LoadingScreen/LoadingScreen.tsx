@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import OrbitIcons from "../OrbitIcons";
+import OrbitIcons from "../OrbitIcons/OrbitIcons";
 import { i18n, type Locale } from "@/i18n-config";
 import styles from "./LoadingScreen.module.css";
 
@@ -39,16 +39,17 @@ export default function LoadingScreen() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "var(--background, #ffffff)",
+        color: "var(--foreground)",
+        backgroundColor: "var(--background)",
         zIndex: 9999,
         transition: "opacity 0.3s ease",
       }}
     >
-      <div className={styles.preloader}>
+      <div className={styles.loaderWrapper}>
         {ringsData.map((sectors, ringIndex) => (
-          <div key={ringIndex} className={styles.preloader__ring}>
+          <div key={ringIndex} className={styles.loaderRing}>
             {sectors.map((char, charIndex) => (
-              <div key={charIndex} className={styles.preloader__sector}>
+              <div key={charIndex} className={styles.loaderSector}>
                 {char}
               </div>
             ))}
