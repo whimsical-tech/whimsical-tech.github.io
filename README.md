@@ -8,6 +8,11 @@ High priority:
 - Replace current "contact" section with "about me". maybe remove timeline?
 - Basic accessibility tests were fine but i need to test for more specific cases (e.g. 400% zoom)
 
+Mid priority:
+
+- Add comments to blog articles
+- Add "copy" button to code sections in blog articles
+
 Low priority:
 
 - Multi-language support: English and Japanese are the most important and already implemented, I'd like to add Portuguese and German next
