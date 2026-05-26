@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import OrbitIcons from "./OrbitIcons";
+import OrbitIcons from "../OrbitIcons";
 import { i18n, type Locale } from "@/i18n-config";
 import styles from "./LoadingScreen.module.css";
 

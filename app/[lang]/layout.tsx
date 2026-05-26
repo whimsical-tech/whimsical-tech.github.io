@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import RootLayoutWrapper from "./components/RootLayoutWrapper";
+import RootLayoutWrapper from "./components/RootLayoutWrapper/RootLayoutWrapper";
 
 import "../globals.css";
 

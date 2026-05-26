@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LoadingScreen from "./LoadingScreen";
-import { ThemeProvider } from "./ThemeProvider/ThemeProvider";
-import { I18nProvider } from "../../I18nProvider";
-import NavBar from "./NavBar/NavBar";
+import LoadingScreen from "../LoadingScreen/LoadingScreen";
+import { ThemeProvider } from "../ThemeProvider/ThemeProvider";
+import { I18nProvider } from "../../../I18nProvider";
+import NavBar from "../NavBar/NavBar";
 import { Locale } from "@/i18n-config";
 
 interface RootLayoutWrapperProps {
   children: React.ReactNode;
-  lang: Locale;
+  lang: string;
 }
 
 export default function RootLayoutWrapper({
