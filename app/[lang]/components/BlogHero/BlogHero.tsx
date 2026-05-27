@@ -23,7 +23,8 @@ function BlogHero({
       <div className={styles.content}>
         <h1>{title}</h1>
         <p>
-          Published on <time dateTime={publishedOn}>{humanizedDate}</time>
+          Published on/公開日{" "}
+          <time dateTime={publishedOn}>{humanizedDate}</time>
         </p>
       </div>
     </header>
