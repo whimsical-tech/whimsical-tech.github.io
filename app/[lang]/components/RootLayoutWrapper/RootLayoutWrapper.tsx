@@ -28,17 +28,19 @@ export default function RootLayoutWrapper({
   }, []);
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return (
+      <ThemeProvider>
+        <LoadingScreen />
+      </ThemeProvider>
+    );
   }
 
   return (
-    <>
-      <ThemeProvider>
-        <I18nProvider lang={lang}>
-          <NavBar />
-          {!isLoading && children}
-        </I18nProvider>
-      </ThemeProvider>
-    </>
+    <ThemeProvider>
+      <I18nProvider lang={lang}>
+        <NavBar />
+        {!isLoading && children}
+      </I18nProvider>
+    </ThemeProvider>
   );
 }

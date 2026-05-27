@@ -75,6 +75,7 @@ async function BlogPost({
   return (
     <article className={styles.wrapper}>
       <BlogHero
+        lang={lang}
         title={frontmatter.title}
         publishedOn={frontmatter.publishedOn}
       />

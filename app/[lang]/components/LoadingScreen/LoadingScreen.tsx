@@ -29,22 +29,7 @@ export default function LoadingScreen() {
   }, []);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "var(--foreground)",
-        backgroundColor: "var(--background)",
-        zIndex: 9999,
-        transition: "opacity 0.3s ease",
-      }}
-    >
+    <div className={styles.loaderContainer}>
       <div className={styles.loaderWrapper}>
         {ringsData.map((sectors, ringIndex) => (
           <div key={ringIndex} className={styles.loaderRing}>

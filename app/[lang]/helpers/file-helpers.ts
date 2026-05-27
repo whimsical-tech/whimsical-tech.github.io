@@ -49,7 +49,3 @@ export const loadBlogPost = React.cache(async function loadBlogPost(
     return null;
   }
 });
-
-function readFile(localPath: string) {
-  return fs.readFile(path.join(process.cwd(), localPath), "utf8");
-}
