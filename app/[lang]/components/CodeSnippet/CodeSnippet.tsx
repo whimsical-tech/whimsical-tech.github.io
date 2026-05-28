@@ -1,15 +1,17 @@
-import React from "react";
 import { Code } from "bright";
+import CodeBlockWrapper from "./CodeBlockWrapper";
 import theme from "./theme.js";
-
 import styles from "./CodeSnippet.module.css";
 
 interface CodeSnippetProps {
   className?: string;
+  [key: string]: any;
 }
 
-function CodeSnippet({ className, ...props }: CodeSnippetProps) {
-  return <Code {...props} theme={theme} className={styles.wrapper} />;
+export default function CodeSnippet({ className, ...props }: CodeSnippetProps) {
+  return (
+    <CodeBlockWrapper>
+      <Code {...props} theme={theme} className={styles.codeBlock} />
+    </CodeBlockWrapper>
+  );
 }
-
-export default CodeSnippet;

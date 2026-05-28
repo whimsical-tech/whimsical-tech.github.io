@@ -2,7 +2,37 @@
   border-radius: 0px !important;
   margin: 0px calc(var(--viewport-padding) * -1) 64px !important;
   border: 1px solid var(--color-card-border);
+  position: relative;
+  min-height: 100%;
 }
+
+.copyButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  background: var(--foreground);
+  color: var(--background);
+  border-color: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  gap: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.copyButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.codeBlock {
+  margin: 0;
+}
+
 .wrapper pre {
   padding: var(--viewport-padding) !important;
 }

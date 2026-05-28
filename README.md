@@ -11,7 +11,6 @@ High priority:
 Mid priority:
 
 - Add comments to blog articles
-- Add "copy" button to code sections in blog articles
 
 Low priority:
 
