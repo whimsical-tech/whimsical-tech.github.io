@@ -43,20 +43,95 @@ P.S.: 推奨されているリポジトリを使用していない場合は、�
 ### 基本設定
 
 ご想像の通り、まず最初に行うべきことは、いくつかのパッケージをインストールすることだ。
+
+`npm install i18next react-i18next`
+
 それでは、いくつかの基本的なファイルを作成しょう。
 まず、プロジェクトの基本設定が必要だ。
 
 このファイルを「i18n-config.ts」と名付けます。これをルートフォルダに配置する。
 
+```ts
+export const i18n = {
+  defaultLocale: "ja",
+  locales: ["en", "ja"],
+} as const;
+
+export type Locale = (typeof i18n)["locales"][number];
+
+export const hasLocale = (locale: Locale) => {
+  return i18n.locales.includes(locale);
+}
+```
+
 このファイルでは、ウェブサイトのデフォルト言語を定義します。使用する言語の配列を記述し、アプリ内に存在する言語と照合して一致するかどうかを確認する簡単なチェックを行います。
 
 次に、翻訳データを読み込みます。Node.jsのビルド時にimport()がバンドリングの問題を引き起こす可能性があるため、翻訳データは別のファイルとして用意する必要があります。
+
+
+```ts
+import type { Locale } from "./i18n-config";
+
+const locales = {
+  en: () => import("../locales/en.json").then((module) => module.default),
+  ja: () => import("../locales/ja.json").then((module) => module.default),
+};
+
+export const getTranslation = async (locale: Locale) =>
+  locales[locale]?.() ?? locales.ja();
+
+```
 
 読み込まれたパスに対応するフォルダとファイルも必ず作成してください。他の言語を使用する場合は、それに応じて追加してください。コンパイルエラーを防ぐため、すべての翻訳ファイルに空の波括弧を追加してください。後でそこに翻訳された文字列をすべて追加しますが、まずは設定を続けましょう。
 
 app フォルダの直下に [lang] という名前のフォルダを作成してください。角括弧は重要で、lang が動的パラメータであることを示します。[lang] の中にはすべてのページを配置します。
 
+![This is how the directory currently looks like](../../directory.png "This is how the directory currently looks like")
+
 現在、アプリは URL に手動でパラメータを追加しないとアクセスできない。これを修正するため、app フォルダと同じ階層に proxy.ts ファイルを作成する。注意点として、Next.js の古いバージョン（16 未満）を使用している場合は、代わりにミドルウェアファイルが必要だ。
+
+
+```ts
+import { NextRequest, NextResponse } from "next/server";
+import { i18n, Locale } from "./i18n-config";
+
+const { defaultLocale, locales } = i18n;
+
+function getLocale(request: NextRequest) {
+  const acceptLanguage = request.headers.get("accept-language");
+  if (!acceptLanguage) return defaultLocale;
+
+  const preferredLocales = acceptLanguage.split(",").map((lang) => {
+    const code = lang.split(";")[0].replace(/\s+/g, "");
+    return code.substring(0, 2);
+  });
+
+  const matched = preferredLocales.find((lang) =>
+    locales.includes(lang as Locale),
+  );
+  return matched ?? defaultLocale;
+}
+
+export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+  );
+
+  if (pathnameHasLocale) return;
+
+  const locale = getLocale(request);
+  request.nextUrl.pathname = `/${locale}${pathname}`;
+
+  const response = NextResponse.redirect(request.nextUrl);
+  return response;
+}
+
+export const config = {  matcher: [
+    "/((?!_next|public|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico)$).*)",
+  ],
+};
+```
 
 URL に言語パラメータが含まれていなくても、自動的にリダイレクトが行われる。ただし、コンテンツ自体はまだ変更していないため、すべての言語で同じ文字列が表示されたままになる。
 
@@ -65,20 +140,106 @@ URL に言語パラメータが含まれていなくても、自動的にリダ�
 
 今後は URL パラメータからロケールを読み取る。
 
+rom now we will read locale from the url params like this:
+
+```tsx
+export default async function RootLayout({ 
+  children,
+  params, 
+}: Readonly<{
+  children: React.ReactNode;
+  params: Promise<{ lang: Locale }>;
+}>) {
+  const { lang } = await params;
+  return (
+    <html lang={lang}
+```
+
 重要な点は、関数を非同期（async）にし、props に params を追加し、awaited params から lang を取得することだ。
 
 ブラウザでライブコードを検証し、URL で言語を変更すると ```<html lang="">``` が切り替わるか確認できる。有効なのは設定ファイルに記載された言語のみだ。
 
 同じファイルにも以下を追加する。
-
+```tsx
+export async function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "ja" }];
+}
+```
 近づいてきた！
 次に、ユーザーに言語変更の組み込み機能を提供したいので、ロケールスイッチャーを作成する。複数の言語を追加する場合でも役立つよう、オプション付きのドロップダウンは拡張性のある選択だ。components フォルダに追加した。
 
+
+```tsx
+"use client";
+
+import { useRouter, usePathname } from "next/navigation";
+import { useTransition } from "react";
+import { Locale } from "@/i18n-config";
+import { useTranslation } from "react-i18next";
+
+const locales: Record<Locale, { name: string; flag: string }> = {
+  en: { name: "English", flag: "🇬🇧" },
+  ja: { name: "日本語", flag: "🇯🇵" },
+};
+
+export default function LanguageSwitcher() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { i18n } = useTranslation();
+  const [isPending, startTransition] = useTransition();
+
+  const currentLocale = i18n.language;
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLocale = event.target.value as Locale;
+
+    startTransition(async () => {
+      await i18n.changeLanguage(newLocale);
+
+      const newPath = pathname.replace(`/${currentLocale}`, `/${newLocale}`);
+      router.push(newPath);
+    });
+  };
+
+  return (
+    <div
+      style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
+    >
+      <select
+        id="language-select"
+        value={currentLocale}
+        onChange={handleChange}
+        disabled={isPending}
+      >
+        {Object.entries(locales).map(([code, { name, flag }]) => (
+          <option key={code} value={code}>
+            {flag} {name}
+          </option>
+        ))}
+      </select>
+      <span
+        style={{
+          display: "inline-block",
+          width: "16px",
+          height: "16px",
+          visibility: isPending ? "visible" : "hidden",
+        }}
+        aria-hidden={!isPending}
+      >
+        {isPending && <div className="spinner" />}
+      </span>
+    </div>
+  );
+}
+```
+
 参考リポジトリでは、このコンポーネントを SiteHeader.tsx の最後の ```<Link>``` のすぐ後にインポートしてください。
+
+![LanguageSwitcher implemented in UI](../../languageSwitcher.png "LanguageSwitcher implemented in UI")
 
 新しい LanguageSwitcher を試して、URL が切り替わることを確認してほしい。
 
-ハードコードされた文字列から、翻訳ファイルから取得したテキストへ
+## ハードコードされた文字列から、翻訳ファイルから取得したテキストへ
 
 Next.js で翻訳を使用する際、クライアント側またはサーバー側で読み込むことができる。サーバー側の方が一般的に好ましい。なぜなら瞬時に完了するためだ。まずはこの方法について話そう。
 
