@@ -249,7 +249,107 @@ Next.js で翻訳を使用する際、クライアント側またはサーバー
 
 SiteHeader. tsx を起点とするのはページ読み込み時に明確に表示されるためだ。
 
-14線には、このハードコード
+14 行目には、このハードコードされた文字列が表示される。「日本各地の売買・賃貸をワンストップでサポートします」,英語ではおおよそ「One-stop support for buying, selling, and renting throughout Japan」と訳される。
+
+プロジェクト内のすべての翻訳済み文字列は、JSON 値として表現される。この例では、slogan が適切な名前だろう。したがって、en.json には以下のように記述する：
+
+```
+{slogan: "One-stop support for buying, selling, and renting throughout Japan"}
+```
+
+ja.json には以下のように記述する：
+
+```
+{slogan: "日本各地の売買・賃貸をワンストップでサポートします"}
+```
+
+tsx では、ハードコードされた文字列を {t["slogan"]} に置き換える。
+
+t という名前は任意で構わない。「translate」という完全な単語を使いたいかもしれない。
+
+さて、翻訳を追加するコンポーネントに変更を加えよう。
+
+Server コンポーネントでなければならないことを忘れるな。
+
+locale を params から抽出する必要があるため、まず親ページでそれを取得する。 
+
+```tsx
+export default function Home({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}) {
+  const { lang } = await params;
+  const t = await getTranslation(lang);
+
+  return (
+    <div className={styles.page}>
+      <SiteHeader active="home" lang={lang} t={t}  />
+      ...
+```
+その後、翻訳が使用されるコンポーネントにそれを渡す。今回の場合、SiteHeader.tsx だ。
+```tsx
+export async function SiteHeader({
+  active,
+  lang,
+  t,
+}: {
+  active: NavKey;
+  lang: Locale;
+  t: Awaited<ReturnType<typeof getTranslation>>;
+}
+```
+大半のケースでは、locale と getTranslation の両方を渡す必要はなく、後者のみで十分だ。 しかし、SiteHeader.tsx にはナビゲーションリンクが含まれているため、ローカライズされた URL を構築するために lang を追加する必要がある。 現在の locale を尊重する必要があるリンクを含むコンポーネントには、このパターンを適用することを忘れるな。
+
+
+```tsx
+  <Link href={`/${lang}/`} className={styles.brand}>
+    ...
+  </Link>
+  <nav className={styles.nav} aria-label="主要ナビゲーション">
+    <Link
+      href={`/${lang}/`} >
+      ...
+    </Link>
+    <Link
+      href={`/${lang}/about`} 
+      ...
+```
+これでローカライズされた文字列が表示され、移動中に正しいロケールが維持されるはずだ。 極端に単純化したバージョンはこうなる：すべてのサーバーコンポーネントでこれを行えば完了だ。
+
+### クライアントサイド
+
+対話型のクライアントコンポーネントや、サーバーレンダリングが不可能な場合は、異なるパターンを使用する必要がある。
+
+React Context に既に慣れているなら、ツリー全体でプロパティを無限に渡さずにアプリ全体で情報を簡単に提供する方法だと知っているはずだ。 同様に、layout.tsx で Provider を使用して、アプリ全体に言語を渡す。
+
+```tsx
+"use client";
+
+import { ReactNode, useEffect } from "react";
+import { I18nextProvider, initReactI18next } from "react-i18next";
+import { Locale } from "@/i18n-config";
+import i18next from "i18next";
+import en from "../../locales/en.json";
+import ja from "../../locales/ja.json";
+
+export function I18nProvider({
+  children,
+  lang,
+}: {
+  children: ReactNode;
+  lang: Locale;
+}) {
+  useEffect(() => {
+    if (!i18next.isInitialized || i18next.language !== lang) {
+      i18next.changeLanguage(lang);
+    }
+  }, [lang]);
+
+  return <I18nextProvider i18n={i18next}>{children}</I18nextProvider>;
+}
+
+```
 
 ---
 
