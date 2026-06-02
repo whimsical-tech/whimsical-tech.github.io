@@ -1,4 +1,30 @@
 {
+  "aboutMe": {
+    "betterHorizon": "Always in search of a better horizon",
+    "betterHorizonText": "One of my most important values is <i>self-improvement</i>. Learning is my passion and hobby, and I enjoy using my knowledge to find creative and logical solutions during daily life. <br/> Although I'm a serious and responsible person, I like to find fun and joy in small moments, which is why I chose to be whimsical in this portfolio.",
+    "whyJapan": "Why living in Japan",
+    "whyJapanText": "Part of my reasons are rather common: I do love sushi, anime and games! But above all, Japan has always spoken to my heart. <br/> I deeply appreciate the warmth and consideration I witness daily in this country. Small acts of acknowledgement, such as realizing a place is too crowded and narrow, and bowing slightly when meeting someone else in your path. <br/> I'm also quite aligned with <i>Ganbarimasu</i>, a very common word in Japanese that means <i>doing your best</i>. I'm honored and grateful to live in this country, and if it all goes well, this is where I hope to settle for decades.",
+    "professionalAchievements": "Professional Achievements",
+    "professionalAchievementsText": "In my 12 years of frontend and full stack experience, I have developed from scratch, refactored and maintained:",
+    "achievements": [
+      {
+        "0": "Real-time data dashboards, including graphs, tables and filters"
+      },
+      {
+        "1": "API Integrations, including from internal and external SDKS, as well as handling documentation"
+      },
+      {
+        "2": "Responsive design and functionality including media streaming for all kinds of devices and browsers, even Smart TVs"
+      },
+      {
+        "3": "Multi-language projects, implementation of authentication and different levels of authorization, testing, deploying"
+      }
+    ],
+    "achievementsConclusion": "I have also mentored junior engineers, conducted interviews for senior positions, and implemented a components library for internal use.",
+    "softSkillsAndJapanese": "Soft Skills and Japanese Level",
+    "softSkillsText": "Coming from a communicative culture and having already lived in the multicultural environment that is Berlin, I can handle the nuances of talking to people from different countries, and I can easily speak to the boss, the customer, the intern, the marketing specialist or my engineer colleagues. My personality is action-oriented, I always have an eye out for what needs to be done and I ensure it gets executed in good timing.",
+    "JapaneseLevelText": "To practice my Japanese speaking abilities, I work part-time at an Izakaya. The first days were the most difficult, it was hard to understand most things. But quickly I started remembering the most important words I needed for daily life, and I'm sure the same will apply working with programming in an office. Although I'm not fluent in Japanese, I think being understood is the most important thing, so I'll speak and use gestures or whatever helps me get my point across. I'll study hard and make use of that <i>Ganbarimasu</i> to ensure I can speak as smoothly as everyone around me in no time!"
+  },
   "contact": "Thank you for the visit! Contact me at",
   "navbar.intro": "Intro",
   "navbar.skills": "Skills",
