@@ -9,6 +9,7 @@ import { BiWorld } from "react-icons/bi";
 import { FaSun } from "react-icons/fa6";
 import { FaMoon } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
+import { AiOutlineSun } from "react-icons/ai";
 import FocusLock from "react-focus-lock";
 import { RemoveScroll } from "react-remove-scroll";
 import { useTheme } from "../ThemeProvider/ThemeProvider";
@@ -185,6 +186,7 @@ export default function NavBar() {
                 onClick={scrollTo("intro")}
                 className={active === "intro" ? styles.active : undefined}
               >
+                <AiOutlineSun className={styles.hoverIcon} />
                 {t("navbar.intro")}
               </a>
             </li>
@@ -194,6 +196,7 @@ export default function NavBar() {
                 onClick={scrollTo("skills")}
                 className={active === "skills" ? styles.active : undefined}
               >
+                <AiOutlineSun className={styles.hoverIcon} />
                 {t("navbar.skills")}
               </a>
             </li>
@@ -203,6 +206,7 @@ export default function NavBar() {
                 href={`/${currentLang}/blog`}
                 onClick={() => setIsMenuOpen(false)}
               >
+                <AiOutlineSun className={styles.hoverIcon} />
                 {t("navbar.blog")}
               </Link>
             </li>
@@ -212,6 +216,7 @@ export default function NavBar() {
                 onClick={scrollTo("contact")}
                 className={active === "contact" ? styles.active : undefined}
               >
+                <AiOutlineSun className={styles.hoverIcon} />
                 {t("navbar.contact")}
               </a>
             </li>
