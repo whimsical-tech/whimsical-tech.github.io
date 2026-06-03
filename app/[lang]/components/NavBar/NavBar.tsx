@@ -9,7 +9,7 @@ import { BiWorld } from "react-icons/bi";
 import { FaSun } from "react-icons/fa6";
 import { FaMoon } from "react-icons/fa";
 import { HiMenu, HiX } from "react-icons/hi";
-import { AiOutlineSun } from "react-icons/ai";
+import { MdWbSunny } from "react-icons/md";
 import FocusLock from "react-focus-lock";
 import { RemoveScroll } from "react-remove-scroll";
 import { useTheme } from "../ThemeProvider/ThemeProvider";
@@ -180,43 +180,30 @@ export default function NavBar() {
           </button>
 
           <ul className={styles.list}>
-            <li>
-              <a
-                href="#intro"
-                onClick={scrollTo("intro")}
-                className={active === "intro" ? styles.active : undefined}
-              >
-                <AiOutlineSun className={styles.hoverIcon} />
+            <li className={active === "intro" ? styles.active : undefined}>
+              <MdWbSunny className={styles.hoverIcon} />
+              <a href="#intro" onClick={scrollTo("intro")}>
                 {t("navbar.intro")}
               </a>
             </li>
-            <li>
-              <a
-                href="#skills"
-                onClick={scrollTo("skills")}
-                className={active === "skills" ? styles.active : undefined}
-              >
-                <AiOutlineSun className={styles.hoverIcon} />
+            <li className={active === "skills" ? styles.active : undefined}>
+              <MdWbSunny className={styles.hoverIcon} />
+              <a href="#skills" onClick={scrollTo("skills")}>
                 {t("navbar.skills")}
               </a>
             </li>
-            <li>
+            <li className={active === "blog" ? styles.active : undefined}>
+              <MdWbSunny className={styles.hoverIcon} />
               <Link
-                className={active === "blog" ? styles.active : undefined}
                 href={`/${currentLang}/blog`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <AiOutlineSun className={styles.hoverIcon} />
                 {t("navbar.blog")}
               </Link>
             </li>
-            <li>
-              <a
-                href="#contact"
-                onClick={scrollTo("contact")}
-                className={active === "contact" ? styles.active : undefined}
-              >
-                <AiOutlineSun className={styles.hoverIcon} />
+            <li className={active === "contact" ? styles.active : undefined}>
+              <MdWbSunny className={styles.hoverIcon} />
+              <a href="#contact" onClick={scrollTo("contact")}>
                 {t("navbar.contact")}
               </a>
             </li>

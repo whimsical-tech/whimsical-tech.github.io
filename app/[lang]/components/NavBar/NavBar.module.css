@@ -50,12 +50,49 @@
   text-decoration: none;
   font-weight: 500;
   position: relative;
-  transition: color 0.3s ease;
   padding: 1em;
   border-bottom: 1px solid var(--bright-orange);
   display: flex;
   align-items: center;
   gap: 0.5em;
+  top: -3.3em;
+}
+
+.list li:hover a {
+  background-color: var(--background);
+  z-index: 1;
+  position: relative;
+  border-radius: 5px;
+}
+
+.hoverIcon {
+  position: relative;
+  top: -0.8em;
+  left: calc(50% - 0.5em);
+  color: var(--emphasis);
+  opacity: 0;
+  font-size: 2.4em;
+  transition: opacity 0.3s ease-out;
+  pointer-events: none;
+  z-index: -1;
+}
+
+li:hover .hoverIcon {
+  opacity: 1;
+}
+
+li.active .hoverIcon {
+  opacity: 0.8;
+  color: var(--foreground);
+}
+
+li.active a {
+  background-color: var(--background);
+  border-radius: 5px;
+}
+
+li .active::after {
+  width: 100%;
 }
 
 .langSwitch {
@@ -117,35 +154,6 @@
 .themeSwitch:active {
   background-color: var(--foreground);
   color: var(--background);
-}
-
-.list a:hover {
-}
-
-.list a:hover::after {
-}
-
-.hoverIcon {
-  position: absolute;
-  top: -0.3em;
-  left: -0.3em;
-  color: var(--emphasis);
-  opacity: 0;
-  font-size: 2.2em;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-.list a:hover .hoverIcon {
-  opacity: 1;
-}
-
-li .active {
-  background-color: var(--emphasis);
-}
-
-li .active::after {
-  width: 100%;
 }
 
 .wordplay {
@@ -290,8 +298,9 @@ li .active::after {
   }
 
   li.mobileOnly {
-    position: absolute;
-    bottom: 8em;
+    align-self: center;
+    padding-right: 3em;
+    padding-top: 2em;
   }
 
   .themeSwitch {
@@ -309,6 +318,41 @@ li .active::after {
 
   .list {
     display: none;
+    align-items: flex-start;
+  }
+
+  .list li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 2.5em;
+  }
+
+  .menuOpen .list li a {
+    top: auto;
+    padding-left: 0.5em;
+  }
+
+  .hoverIcon {
+    top: auto;
+    left: auto;
+  }
+
+  li:hover .hoverIcon {
+    opacity: 0;
+  }
+
+  li:hover a {
+    background-color: var(--emphasis);
+  }
+
+  .list .active a {
+    z-index: 1;
+  }
+
+  .menuOpen .active .hoverIcon {
+    z-index: 1;
+    color: var(--emphasis);
   }
 
   .buttonsContainer .themeSwitch {
