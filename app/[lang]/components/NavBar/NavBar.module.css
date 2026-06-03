@@ -117,12 +117,9 @@
 }
 
 .list a:hover {
-  background-color: var(--emphasis);
-  color: var(--background);
 }
 
 .list a:hover::after {
-  width: 0;
 }
 
 li .active {
