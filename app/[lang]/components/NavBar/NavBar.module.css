@@ -53,6 +53,9 @@
   transition: color 0.3s ease;
   padding: 1em;
   border-bottom: 1px solid var(--bright-orange);
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 }
 
 .langSwitch {
@@ -120,6 +123,21 @@
 }
 
 .list a:hover::after {
+}
+
+.hoverIcon {
+  position: absolute;
+  top: -0.3em;
+  left: -0.3em;
+  color: var(--emphasis);
+  opacity: 0;
+  font-size: 2.2em;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.list a:hover .hoverIcon {
+  opacity: 1;
 }
 
 li .active {
