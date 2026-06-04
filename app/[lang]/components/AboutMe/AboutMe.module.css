@@ -1,0 +1,16 @@
+.wrapper {
+}
+.content {
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+.card::before {
+  content: "「";
+  position: relative;
+  left: -5%;
+}
+.card::after {
+  content: "」";
+  position: relative;
+  left: 100%;
+}

@@ -1,3 +1,4 @@
+import AboutMe from "./components/AboutMe/AboutMe";
 import Contact from "./components/Contact/Contact";
 import Intro from "./components/Intro/Intro";
 import Skills from "./components/Skills/Skills";
@@ -9,9 +10,11 @@ export default async function Home({
 }: {
   params: Promise<{ lang: Locale }>;
 }) {
+  const { lang } = await params;
   return (
     <div>
       <main className="wrapper">
+        <AboutMe lang={lang} />
         <Intro params={params} />
         <Skills />
         <Timeline params={params} />
