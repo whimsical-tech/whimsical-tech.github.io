@@ -19,14 +19,14 @@
 
 :root {
   --font-primary: "Murecho", Arial, Helvetica, sans-serif;
-  --background: #fbf6f6;
-  --foreground: #280905;
-  --emphasis: #d96868;
-  --dark-green: #4c5c2d;
-  --opaque-green: #6a7e3f;
-  --forest-green: #237227;
-  --bright-orange: #ff7f11 /*#ffaa00*/;
-  --opaque-orange: #ffd786;
+  --background: rgb(251, 246, 246);
+  --foreground: rgb(40, 9, 5);
+  --emphasis: rgb(217, 104, 104);
+  --dark-green: rgb(76, 92, 45);
+  --opaque-green: rgb(106, 126, 63);
+  --forest-green: rgb(35, 114, 39);
+  --bright-orange: rgb(255, 127, 17);
+  --opaque-orange: rgb(255, 215, 134);
   --content-width: 800px;
 }
 
@@ -36,8 +36,8 @@
 }
 
 [data-theme="dark"] {
-  --background: #222222;
-  --foreground: #fbf6f6;
+  --background: rgb(34, 34, 34);
+  --foreground: rgb(251, 246, 246);
 }
 
 body {

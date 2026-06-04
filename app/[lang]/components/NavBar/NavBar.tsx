@@ -163,7 +163,13 @@ export default function NavBar() {
 
   return (
     <nav className={`${styles.nav} ${isMenuOpen ? styles.menuOpen : ""}`}>
-      <Logo />
+      <Link
+        href={`/${currentLang}`}
+        className={styles.logoLink}
+        onClick={() => setIsMenuOpen(false)}
+      >
+        <Logo />
+      </Link>
 
       <FocusLock
         disabled={!isMenuOpen}
@@ -192,6 +198,12 @@ export default function NavBar() {
                 {t("navbar.skills")}
               </a>
             </li>
+            <li className={active === "contact" ? styles.active : undefined}>
+              <MdWbSunny className={styles.hoverIcon} />
+              <a href="#contact" onClick={scrollTo("contact")}>
+                {t("navbar.contact")}
+              </a>
+            </li>
             <li className={active === "blog" ? styles.active : undefined}>
               <MdWbSunny className={styles.hoverIcon} />
               <Link
@@ -200,12 +212,6 @@ export default function NavBar() {
               >
                 {t("navbar.blog")}
               </Link>
-            </li>
-            <li className={active === "contact" ? styles.active : undefined}>
-              <MdWbSunny className={styles.hoverIcon} />
-              <a href="#contact" onClick={scrollTo("contact")}>
-                {t("navbar.contact")}
-              </a>
             </li>
             <li className={styles.mobileOnly}>
               <button onClick={toggleTheme} className={styles.themeSwitch}>

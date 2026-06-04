@@ -1,21 +1,21 @@
 {
   "aboutMe": {
-    "betterHorizon": "Always in search of a better horizon",
-    "betterHorizonText": "One of my most important values is <i>self-improvement</i>. Learning is a passion of mine, and I apply that knowledge to find creative and logical solutions in everyday challenges. <br/> While I approach work with seriousness and responsibility, I like to find joy in small moments, hence the whimsical nature of this portfolio.",
-    "whyJapan": "Why I chose Japan",
-    "whyJapanText": "Although I certainly love sushi, anime, and games, Japan has always resonated with my heart. <br/> I deeply appreciate the warmth and consideration evident in daily interactions in this country - small acts of acknowledgement, such as realizing a place is too crowded and narrow, and bowing slightly when meeting someone else in your path. <br/> I'm also quite aligned with <i>Ganbarimasu</i>, a very common word in Japanese that means <i>doing your best</i>. I'm honored and grateful to live in this country, and if it all goes well, this is where I hope to settle for the long run.",
-    "professionalAchievements": "What I've built",
-    "professionalAchievementsText": "In my 12 years of frontend and full stack experience, I have developed from scratch, refactored and maintained:",
+    "betterHorizon": "常に、より良い地平線を求めて",
+    "betterHorizonText": "私の最も重要な価値観の一つは <i>「自己改善」</i>です。学ぶことは私の情熱であり、その知識を応用して、日常の課題に対して創造的かつ論理的な解決策を見出します。仕事には真摯さと責任感で臨みますが、小さな瞬間に喜びを見つけることも大切にしています。そのため、このポートフォリオには whimsical（風変わりな）な性質が表れています。",
+    "whyJapan": "なぜ日本を選んだのか",
+    "whyJapanText": "確かに私は寿司やアニメ、ゲームが好きですが、日本は常に私の心に響いてきました。私はこの国での日常のやり取りに見られる温かさと配慮を深く賞賛しています。人が密集し狭いことに気づく、あるいは道で出会った相手に軽く頭を下げるような、小さな承認の行為などです。また、「頑張ります」という非常に一般的な日本語の言葉、つまり「最善を尽くす」という意味にも共感しています。この国で暮らせることを光栄に思い、感謝しています。すべてがうまくいけば、長期的にここで定住したいと考えています。",
+    "professionalAchievements": "私が構築したもの",
+    "professionalAchievementsText": "12 年に及ぶフロントエンドおよびフルスタックの経験の中で、ゼロから開発し、リファクタリングし、維持管理してきたものは以下の通りです：",
     "achievements": [
-      "Real-time data dashboards, including graphs, maps, tables and filters",
-      "API Integrations, including from internal and external SDKS, as well as handling documentation",
-      "Responsive design and functionality including media streaming for all kinds of devices and browsers, even Smart TVs",
-      "Multi-language projects, implementation of authentication and different levels of authorization, testing, deploying"
+      "リアルタイムデータダッシュボード（グラフ、マップ、テーブル、フィルターを含む)",
+      "API 統合（社内・社外 SDK を含み、ドキュメント対応も実施）",
+      "レスポンシブデザインと機能（あらゆるデバイス・ブラウザ、スマート TV 含むメディアストリーミング）",
+      "多言語プロジェクト、認証・権限管理の実装、テスト、デプロイ"
     ],
-    "achievementsConclusion": "I have also mentored junior engineers, conducted interviews for senior positions, and implemented a components library for internal use.",
-    "softSkillsAndJapanese": "Soft Skills and Japanese Level",
-    "softSkillsText": "Coming from a communicative culture and having lived in the multicultural environment that is Berlin, I navigate the nuances of talking to people from different countries with ease. I can translate technical concepts for stakeholders, collaborate with interns, align with leads, speak to the boss and communicate to the customer. My personality is action-oriented, I constantly identify what needs to be done and I ensure timely execution.",
-    "JapaneseLevelText": "To practice my Japanese speaking abilities, I work part-time at an Izakaya. The first days presented a steep challenge, but I quickly adapted by focusing on essential vocabulary required for the environment. I'm sure something similar will apply if I work in Japanese in an office. Although I'm not yet fluent, I'm adaptable and a good communicator, and I'll continue to make use of that <i>Ganbarimasu</i> to ensure I can speak as smoothly as my colleagues."
+    "achievementsConclusion": "また、ジュニアエンジニアのメンタリング、シニア職員の面接実施、社内用コンポーネントライブラリの構築も行いました。",
+    "softSkillsAndJapanese": "ソフトスキルと日本語レベル",
+    "softSkillsText": "コミュニケーション文化の出身であり、ベルリンという多文化環境で生活してきたため、異なる国の人々と話す際のニュアンスを自在に扱えます。技術概念をステークホルダーに説明し、インターンと協力し、リードと連携し、上司と話し、顧客とコミュニケーションを取ることができます。私の性格は行動指向で、常に何をするべきかを特定し、タイムリーな実行を確実にします。",
+    "JapaneseLevelText": "日本語の会話力を練習するため、居酒屋でパートタイムで働いています。最初の日は厳しい挑戦でしたが、その環境に必要な必須語彙に焦点を当てることですぐに適応しました。オフィスで日本語で働く場合も同様のことが当てはまると思います。まだ流暢ではありませんが、適応力があり、良いコミュニケーターです。同僚のようにスムーズに話せるよう、その「頑張ります」を今後も活かし続けます。"
   },
   "contact": "ご訪問ありがとうございます！までご連絡ください",
   "navbar.intro": "紹介",

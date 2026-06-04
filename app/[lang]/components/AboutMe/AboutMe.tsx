@@ -4,36 +4,43 @@ import { Locale } from "@/i18n-config";
 
 export default async function AboutMe({ lang }: { lang: Locale }) {
   const t = await getDictionary(lang);
+
+  const HtmlText = ({ html }: { html: string }) => (
+    <span dangerouslySetInnerHTML={{ __html: html }} />
+  );
+
   return (
     <div className={styles.wrapper}>
-      <section className={styles.content} id="aboutMe">
+      <section className={styles.content} id="intro">
         <section className={styles.card}>
           <h2 className={styles.heading}>{t["aboutMe"].betterHorizon}</h2>
-          <p>{t["aboutMe"].betterHorizonText}</p>
+          <HtmlText html={t["aboutMe"].betterHorizonText} />
         </section>
         <section className={styles.card}>
           <h2 className={styles.heading}>{t["aboutMe"].whyJapan}</h2>
-          <p>{t["aboutMe"].whyJapanText}</p>
+          <HtmlText html={t["aboutMe"].whyJapanText} />
         </section>
+      </section>
+      <section className={styles.content}>
         <section className={styles.card}>
           <h2 className={styles.heading}>
             {t["aboutMe"].professionalAchievements}
           </h2>
           <p>{t["aboutMe"].professionalAchievementsText}</p>
           <ul>
-            {t["aboutMe"].achievements.map((a) => (
-              <li key={a}>{a}</li>
+            {t["aboutMe"].achievements.map((a, index) => (
+              <li key={index}>{a}</li>
             ))}
           </ul>
 
-          <p>{t["aboutMe"].achievementsConclusion}</p>
+          <HtmlText html={t["aboutMe"].achievementsConclusion} />
         </section>
         <section className={styles.card}>
           <h2 className={styles.heading}>
             {t["aboutMe"].softSkillsAndJapanese}
           </h2>
-          <p>{t["aboutMe"].softSkillsText}</p>
-          <p>{t["aboutMe"].JapaneseLevelText}</p>
+          <HtmlText html={t["aboutMe"].softSkillsText} />
+          <HtmlText html={t["aboutMe"].JapaneseLevelText} />
         </section>
       </section>
     </div>

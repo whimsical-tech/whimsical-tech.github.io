@@ -2,7 +2,7 @@
   position: sticky;
   z-index: 3;
   background: var(--background);
-  padding: 2.75rem 1.5rem 1.5rem;
+  padding: 2.75rem 1.5rem 0;
   top: 0;
   right: 0;
   width: 100%;
@@ -26,6 +26,11 @@
   min-width: 200px;
   order: 0;
   grid-row: 1 / 2;
+}
+
+.logoLink {
+  color: var(--foreground);
+  text-decoration: none;
 }
 
 .heightEnforcer {
@@ -56,6 +61,10 @@
   align-items: center;
   gap: 0.5em;
   top: -3.3em;
+}
+
+.list li {
+  max-height: 5em;
 }
 
 .list li:hover a {

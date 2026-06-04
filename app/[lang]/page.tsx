@@ -1,6 +1,5 @@
 import AboutMe from "./components/AboutMe/AboutMe";
 import Contact from "./components/Contact/Contact";
-import Intro from "./components/Intro/Intro";
 import Skills from "./components/Skills/Skills";
 import Timeline from "./components/Timeline/Timeline";
 import { Locale } from "@/i18n-config";
@@ -15,7 +14,6 @@ export default async function Home({
     <div>
       <main className="wrapper">
         <AboutMe lang={lang} />
-        <Intro params={params} />
         <Skills />
         <Timeline params={params} />
         <Contact params={params} />

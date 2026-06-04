@@ -1,16 +1,102 @@
 .wrapper {
+  background-image: url(../../../../public/horizon.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-sizing: border-box;
 }
 .content {
   max-width: var(--content-width);
-  margin: 0 auto;
+  margin: 0 0 0 30vw;
+  background-color: color-mix(in srgb, var(--background), transparent 50%);
+  padding-left: 5%;
+  box-sizing: border-box;
+}
+
+.card {
+  max-width: 50%;
+  margin-left: auto;
+  margin-bottom: 2em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  line-height: 1.25;
+}
+
+.card::before,
+.card::after {
+  top: auto;
+  align-self: flex-start;
+}
+.card::before {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.content:nth-of-type(1) .card:nth-of-type(1) {
+  margin-left: 0;
+  max-width: 90%;
+}
+.content:nth-of-type(1) .card:nth-of-type(1)::before,
+.content:nth-of-type(2) .card:nth-of-type(2)::before {
+  top: 4vh;
+  left: -5%;
+}
+.content:nth-of-type(1) .card:nth-of-type(1)::after,
+.content:nth-of-type(2) .card:nth-of-type(1)::after {
+  top: 0vh;
+  left: 98%;
+}
+
+.content:nth-of-type(1) .card:nth-of-type(2)::after,
+.content:nth-of-type(2) .card:nth-of-type(2)::after {
+  top: -1vh;
+  left: 100%;
+}
+
+.content:nth-of-type(2) {
+  background-color: color-mix(in srgb, var(--background), transparent 40%);
+  margin: 0 25vw 0 0;
+}
+.content:nth-of-type(2) .card {
+  max-width: 70%;
+}
+
+.content:nth-of-type(2) .card:nth-of-type(1) {
+  margin-right: auto;
+}
+
+.card:nth-of-type(2n) {
+  margin-left: auto;
+  padding-right: 2em;
 }
 .card::before {
   content: "「";
   position: relative;
-  left: -5%;
+  top: 2vh;
+  left: -8%;
 }
 .card::after {
   content: "」";
   position: relative;
-  left: 100%;
+  left: 108%;
+}
+
+@media screen and (max-width: 800px) {
+  .wrapper {
+    background-position: center;
+  }
+  .content {
+    margin: 0 0 0 10vw;
+  }
+  .content:nth-of-type(2) {
+    margin: 0 10vw 0 0;
+  }
+  .card {
+    max-width: 90%;
+  }
+  .content:nth-of-type(2) .card {
+    max-width: 90%;
+  }
 }
