@@ -378,7 +378,7 @@ li .active::after {
     height: 100vh;
     background: var(--background);
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 2rem;
     z-index: 4;
     margin: 0;
