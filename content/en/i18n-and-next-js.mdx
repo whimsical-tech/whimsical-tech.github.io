@@ -28,12 +28,12 @@ Of course, if you want to start your own project from zero, or if you already ha
 We will add English option to this application. If you need more languages or other languages in your app, the process is fairly similar, and it will be explained as well.
 
 ### Note on the repository branches
-P.S.: you can skip this if you are not using the suggested repo
-- _initial_: this is the branch where you will find the untranslated project. start here if you want to follow the tutorial from zero.
-- _master_: here the repository is 100% translated. use this branch when you want to see examples of a complete project in i18n.
-- _test_: this branch strictly follows the article to the end. it does not implement translations or changes beyond the ones explicitly mentioned here.
+P.S.: you can skip this section if you are not using the suggested repo
+- _initial_: this is the branch where you will find the untranslated project. Start here if you want to follow the tutorial from zero.
+- _master_: here the repository is 100% translated. Use this branch when you want to see examples of a complete project in i18n.
+- _test_: this branch strictly follows the article to the end. It does not implement translations or changes beyond the ones explicitly mentioned here.
 
-This project was not easy to fully translate, so if you're a beginner, consider it a challenge to get it to 100% and don't feel bad if you're stuck and need to look at the solution.
+This project was not easy to fully translate, so if you're a beginner, consider it a challenge to get it to 100% and don't feel bad if you're stuck and need to consult the solution.
 
 ## Basic settings
 
@@ -41,7 +41,7 @@ As you might have expected, the first thing we have to do is installing some pac
 
 `npm install i18next react-i18next`
 
-Now, let's create a few fundamental files.
+Then, let's create a few fundamental files.
 First, we need the basic configuration of our project.
 
 I'm calling this file ```i18n-config.ts```. Let's put it in the root folder.
@@ -59,7 +59,7 @@ export const hasLocale = (locale: Locale) => {
 }
 ```
 
-This is the file where you define which language should be the default in your website, where you include the array with the languages you'll be using, and a simple check that matches languages against the one present in your app to see if there is a match.
+This is the file where you define which language should be the default in your website, include the array with the languages you'll be using, and a simple check that matches languages against the one present in your app to see if there is a match.
 
 The next thing we want is to load our translations. It needs to be a separate file because import() can cause bundling issues during Node.js buildtime.
 
@@ -78,11 +78,17 @@ export const getTranslation = async (locale: Locale) =>
 
 ```
 
-Make sure to also create a folder (locales) with files (en.json, ja.json) that matches the loaded path.
+Make sure to also create a folder with files that matches the loaded path.
+In case you're using the file above verbatim, that means you'll create a folder ```locales``` with files ```en.json``` and ```ja.json```.
 If you're using other languages, make sure to add them accordingly.
 To avoid compilation errors, make sure to add empty curly braces {} in all of the translation files. 
-Later we will add all translated strings there, but for now let's continue our configuration.
 
+```en.json```, ```ja.json```, any translation file:
+```
+{}
+```
+
+Later we will add all translated strings there, but for now let's continue our configuration.
 Directly under the app folder, create a folder called [lang].
 The brackets are important, they specify lang is a dynamic parameter.
 Inside [lang] you should have all of your pages.
@@ -135,13 +141,13 @@ export const config = {  matcher: [
 };
 ```
 
-Now even if there are no language params in the url, an automatic redirection will occur.
+After this implementation, even if there are no language params in the url, an automatic redirection will occur.
 However, because we haven't changed the contents yet, we are seeing the same strings for all languages.
 
 Let's handle that next!
 
 Go to the layout.tsx file encompassing the whole application.
-There is a lang attribute in the HTML, and you no longer want this value to be static!
+There is a lang attribute in the HTML, and you no longer want this value to be static.
 
 From now we will read locale from the url params like this:
 
@@ -244,7 +250,7 @@ For our example repository, I am importing this component in the SiteHeader.tsx,
 
 ![LanguageSwitcher implemented in UI](../../languageSwitcher.png "LanguageSwitcher implemented in UI")
 
-Go ahead and try your new LanguageSwitcher, and you should be able to see the url changing!
+Go ahead and try your new LanguageSwitcher, and you should be able to see the url changing.
 
 ## From hardcoded strings to text fetched from translation files
 When using translations in Next.js, you can load them client-side or server-side.
@@ -304,8 +310,7 @@ export async function SiteHeader({
 ```
 
 In most cases, you will not need to pass both the locale and the getTranslation props, only the latter should suffice.
-However, since SiteHeader.tsx contains navigation links, we need to add lang to construct localized URLs:
-Remember to apply this pattern to any component containing links that need to respect the current locale.
+However, since SiteHeader.tsx contains navigation links, we need to add lang to construct localized URLs, so remember to apply this pattern to any component containing links that need to respect the current locale.
 
 ```tsx
   <Link href={`/${lang}/`} className={styles.brand}>
@@ -372,26 +377,24 @@ Then, add the provider to the main layout.tsx of your project.
 ```
 
 ```LastVisitNotice.tsx``` is a client component, so it is the perfect use case to test our provider.
-One thing that remains the same: You will still want to add the translated strings to the json files and replace in the tsx accordingly.
-So, in the case of the example repository, I'm replacing our hardcoded string  ※表示される日付はいつも今日の日付です（デモ用の表示）。 with ```t("lastVisit.dateWarning")```
+I'm replacing our hardcoded string ```※表示される日付はいつも今日の日付です（デモ用のローカル表示）``` with ```{t("lastVisit.dateWarning")}``` and then adding ```lastVisit.dateWarning``` to the json files.
 
 en.json
 ```
 {
   "slogan": "One-stop support for buying, selling, and renting throughout Japan",
   "lastVisit": {
-    "dateWarning": "The displayed date is always today's date (demo purposes only)"
+    "dateWarning": "The displayed date is always today's date (local display for demo purposes)"
   }
 }
 ```
 
-
-Now load the translations:
+In ```LastVisitNotice.tsx```, don't forget to load the translations:
 ```tsx
 const { t } = useTranslation();
 ```
 
-Don't forget the import:
+...and include the import:
 ```tsx
 import { useTranslation } from "react-i18next";
 ```
@@ -399,12 +402,13 @@ import { useTranslation } from "react-i18next";
 ### Client-side loading considerations
 A Flash of Untranslated Content (FOUC) can occur when translations are loaded on the client-side.
 This is bad UX.
-To prevent it, implement a loading state while the locale is being resolved. You can see a demonstration in `LastVisitNotice.tsx`.
 
 ![If you remove the loading state from LastVisitNotice, you will see this bad example of UI when loading the page.](../../badUi.png "If you remove the loading state from LastVisitNotice, you will see this bad example of UI when loading the page.")
 _Even though this page is supposed to show in English, Japanese text may show for a second when loading._
 
 <br/>
+
+To prevent it, implement a loading state while the locale is being resolved. You can see a demonstration in `LastVisitNotice.tsx`.
 
 ![With the loading state, you see a skeleton of the component instead, and afterwards the expected strings.](../../loading.png "")
 _With the loading state, you see a skeleton of the component instead, and afterwards the expected strings._
@@ -415,7 +419,14 @@ ___
 <br/>
 
 This concludes the basic tutorial for both client and server components.
-By replicating the steps above accordingly, you should be able to deliver multi-language applications from scratch, or apply the changes to your current Next.js 16 project.
+Let's recap:
+- Server Components can get the correct dictionary by getting the params from the page
+- Client Components can share a Provider 
+- Ensure a loading state for client components to avoid FOUC 
+- Remember to update all internal links to include locale
+- Include all translated strings in the corresponding json files, and replace in the tsx accordingly
+By replicating the steps above, you should be able to deliver multi-language applications from scratch, or apply the changes to your current Next.js 16 project.
+
 But we can still go even deeper, because language changes do not stop at words alone.
 
 ### Adding props and html to translations
@@ -492,17 +503,17 @@ en.json
 ```
 
 ### Splitting translation strings
-You might be thinking, can't I just use multiple strings instead?
-Perhaps you could have used a string for "Your last visit was  ", then show the prop as usual in the tsx, then continue with another string ". Since then, ", then the next prop, and so on.
+You might be thinking: "Instead of using ```<Trans>``` or template strings, can I not use multiple strings?"
+Perhaps a string for ___"Your last visit was  "___, then show the prop as usual in the tsx, then continue with ___". Since then, "___, then the next prop, and so on.
 By doing that, there is no need for template strings or external components.
 
-This is indeed the pattern for server-side translations, since ```<Trans>``` is not available.
-However, for client side there is no need to split translations like that. not only is that more complicated and more difficult to read, it can also easily introduce errors as different languages have different flows and word order.
+If you want to avoid ```dangerouslySetInnerHTML```, this is indeed the pattern for server-side translations, since ```<Trans>``` is not available.
+However, for client side there is no need to split translations like that. Not only that's more difficult to read, it can also easily introduce errors as different languages have different flows and word order.
 In the example above, the first full stop comes in English right after the value, whereas in Japanese there is one more word. In other languages the structure could vary even further, and perhaps the value would start the sentence.
-To account for all differences and understand them at a glance, make sure to use Trans or a template string for client components.
+To account for all differences and understand them at a glance, make sure to use ```<Trans>``` or a template string when dealing with client components.
 
 ## Naming things
-If so far you have only followed the tutorial without adding extra translations, your current locale files only hold 4 keys.
+If so far you have strictly followed the tutorial without adding extra translations, your current locale files only hold 4 keys.
 ```json
 {
   "lastVisit": {
@@ -517,10 +528,10 @@ If so far you have only followed the tutorial without adding extra translations,
 It's simple now, but as we add more and more strings, it can get quite chaotic.
 
 There is no single correct way to set up the locale files, it varies depending on the needs of your application.
-The most important rule is uniqueness and context. Avoid generic keys like "mainText" in isolation. Main text of what?
+The most important rule is uniqueness and context, for example, avoid generic keys like "mainText" in isolation. It'd make one wonder: main text of what?
 By nesting it in lastVisit, it becomes clear and self-documenting.
 
-I also recommend keeping the strings in alphabetical order. I used the website https://novicelab.org/jsonabc/ to easily reorder the files in English character order (A-Z).
+I also recommend keeping the strings in alphabetical order. I used the website [https://novicelab.org/jsonabc/](https://novicelab.org/jsonabc/) to easily reorder the files in English character order (A-Z).
 
 You can see a more extended example of this in the final version of the project (master branch), where all strings are translated.
 
@@ -540,7 +551,7 @@ Something like:
     - propertyDetail.json
     - ...
 
-To implement that, include the new files in the i18n initialization, which we are doing in the I18nProvider, and the settings in locales.ts.
+To implement that, include the new files in the i18n initialization, which we are doing in the I18nProvider, and the settings in ```locales.ts```.
 You'll also need to change getTranslation to look for the locale in the folder and accept a second parameter to load the intended file.
 
 ## Bonus: Currency
@@ -552,7 +563,7 @@ For example, maybe in your project a Japanese person who lives abroad is trying 
 They might pay in Euro, but it is likely they would prefer the UI in their native language.
 The same language can also represent different currencies. Both U.S. and U.K. speak English, but one uses dollars and the other uses pounds.
 
-But the truly delicate matter is the conversion. Conversion changes all the time, and making that kind of calculation in the frontend is generally unwise.
+The truly delicate matter is the conversion. Conversion changes all the time, and making that kind of calculation in the frontend is generally unwise.
 In most cases you'll want the backend to send you the correct raw number and in the tsx just handle the transformation.
 
 You can then use ```Intl.NumberFormat``` or a library such as currency.js or money.js.
