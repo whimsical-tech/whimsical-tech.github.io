@@ -44,7 +44,7 @@ As you might have expected, the first thing we have to do is installing some pac
 Then, let's create a few fundamental files.
 First, we need the basic configuration of our project.
 
-I'm calling this file ```i18n-config.ts```. Let's put it in the root folder.
+I'm calling this file ```i18n-config.ts```. Let's put it in the src folder.
 
 ```ts
 export const i18n = {
@@ -63,7 +63,7 @@ This is the file where you define which language should be the default in your w
 
 The next thing we want is to load our translations. It needs to be a separate file because import() can cause bundling issues during Node.js buildtime.
 
-Next file: locales.ts
+I'm calling it `locales.ts` and also adding to src folder.
 
 ```ts
 import type { Locale } from "./i18n-config";
@@ -80,8 +80,8 @@ export const getTranslation = async (locale: Locale) =>
 
 Make sure to also create a folder with files that matches the loaded path.
 In case you're using the file above verbatim, that means you'll create a folder ```locales``` with files ```en.json``` and ```ja.json```.
-If you're using other languages, make sure to add them accordingly.
-To avoid compilation errors, make sure to add empty curly braces {} in all of the translation files. 
+If you're using other languages, add them accordingly.
+To avoid compilation errors, please add empty curly braces {} in all of the translation files. 
 
 ```en.json```, ```ja.json```, any translation file:
 ```
@@ -91,12 +91,12 @@ To avoid compilation errors, make sure to add empty curly braces {} in all of th
 Later we will add all translated strings there, but for now let's continue our configuration.
 Directly under the app folder, create a folder called [lang].
 The brackets are important, they specify lang is a dynamic parameter.
-Inside [lang] you should have all of your pages.
+Inside [lang] you should have all of your pages so, move them there.
 
 ![This is how the directory currently looks like](../../directory.png "This is how the directory currently looks like")
 
 Right now your app is only accessible if you manually add a parameter in the url.
-To fix this, let's create a proxy.ts file in the same level as your app folder.
+To fix this, let's create a `proxy.ts` file in the same level as your app folder.
 Please notice, if you are using an older version of Next.js (below 16), you will need a middleware file instead.
 
 ```ts
@@ -146,7 +146,7 @@ However, because we haven't changed the contents yet, we are seeing the same str
 
 Let's handle that next!
 
-Go to the layout.tsx file encompassing the whole application.
+Go to the `layout.tsx` file encompassing the whole application.
 There is a lang attribute in the HTML, and you no longer want this value to be static.
 
 From now we will read locale from the url params like this:
@@ -155,10 +155,10 @@ From now we will read locale from the url params like this:
 export default async function RootLayout({ 
   children,
   params, 
-}: Readonly<{
+}: {
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
-}>) {
+  params: Promise<{ lang: Locale }>; // from @/i18n-config
+}) {
   const { lang } = await params;
   return (
     <html lang={lang} ...
@@ -188,7 +188,26 @@ I added it to components folder.
 import { useRouter, usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { Locale } from "@/i18n-config";
-import { useTranslation } from "react-i18next";
+import { useTranslation, initReactI18next } from "react-i18next";
+
+import i18next from "i18next";
+import en from "../../locales/en.json";
+import ja from "../../locales/ja.json";
+
+if (!i18next.isInitialized) {
+  i18next.use(initReactI18next).init({
+    resources: {
+      en: { locale: en },
+      ja: { locale: ja },
+    },
+    fallbackLng: "ja",
+    ns: ["locale"],
+    defaultNS: "locale",
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+}
 
 const locales: Record<Locale, { name: string; flag: string }> = {
   en: { name: "English", flag: "🇬🇧" },
@@ -246,7 +265,7 @@ export default function LanguageSwitcher() {
 }
 ```
 
-For our example repository, I am importing this component in the SiteHeader.tsx, right after the last ```<Link>```.
+For our example repository, I am importing this component in the `SiteHeader.tsx`, right after the last ```<Link>```.
 
 ![LanguageSwitcher implemented in UI](../../languageSwitcher.png "LanguageSwitcher implemented in UI")
 
@@ -256,19 +275,19 @@ Go ahead and try your new LanguageSwitcher, and you should be able to see the ur
 When using translations in Next.js, you can load them client-side or server-side.
 Server-side is generally preferable since it is instantaneous, so let's talk first about this method.
 
-I will use SiteHeader.tsx as starting point, you can pick any clearly visible string from your own project.
+I will use `SiteHeader.tsx` as starting point, you can pick any clearly visible string from your own project.
 
 In line 14 you will see this hardcoded string: "日本各地の売買・賃貸をワンストップでサポートします"
 In English this might be roughly translated as: "One-stop support for buying, selling, and renting throughout Japan"
 
 All translated strings in your project will be represented by a JSON value. For this example, slogan would be a good name.
-So in en.json, please write:
+So in `en.json`, please write:
 
 ```
 {slogan: "One-stop support for buying, selling, and renting throughout Japan"}
 ```
 
-In ja.json, please write: 
+In `ja.json`, please write: 
 
 ```
 {slogan: "日本各地の売買・賃貸をワンストップでサポートします"}
@@ -280,8 +299,9 @@ Now let's make the changes to whichever component you are adding the translation
 Remember, it must be a Server component!
 
 Since we need to extract the locale from params, first we want to retrieve it on the parent page.
+Go to `[lang]/page.tsx`. You'll also have to apply the new code to other pages where `SiteHeader` is present.
 ```tsx
-export default function Home({
+export default async function Home({
   params,
 }: {
   params: Promise<{ lang: Locale }>;
@@ -295,7 +315,9 @@ export default function Home({
       ...
 ```
 
-Then we pass it to the component where the translations are used, in our case ```SiteHeader.tsx```.
+P.S.: `[propertyId]/page.tsx` may pose a challenge, check `test` branch if you need help.
+
+Then, we pass the required params to the component where the translations are used, in our case ```SiteHeader.tsx```.
 
 ```tsx
 export async function SiteHeader({
@@ -309,8 +331,8 @@ export async function SiteHeader({
 }
 ```
 
-In most cases, you will not need to pass both the locale and the getTranslation props, only the latter should suffice.
-However, since SiteHeader.tsx contains navigation links, we need to add lang to construct localized URLs, so remember to apply this pattern to any component containing links that need to respect the current locale.
+In most cases, you will not need to pass both `locale` and `getTranslation` props: only the latter should suffice.
+However, since `SiteHeader.tsx` contains navigation links, we need to add lang to construct localized URLs, so remember to apply this pattern to any component with links that need to respect the current locale.
 
 ```tsx
   <Link href={`/${lang}/`} className={styles.brand}>
@@ -326,23 +348,22 @@ However, since SiteHeader.tsx contains navigation links, we need to add lang to 
       ...
 ```
 You should now see the localized strings and maintain correct locale while navigating.
-The oversimplified version is: do this for all server components and we are done!
+Now, good news if you are in a hurry: the oversimplified version is, do this for all server components and we are done!
 
 ### Client side
 For interactive client components where server rendering is not possible, we need to use a different pattern.
 
 If you are already familiar with React Context, you'll know it's a way to easily provide information across your app without having to endless pass props along the tree.
-In similar fashion, we will use a Provider in layout.tsx to pass the language along the entire app.
+In similar fashion, we will use a Provider in `layout.tsx` to pass the language along the entire app.
+But first, let's create the provider in its own file:
 
 ```tsx
 "use client";
 
 import { ReactNode, useEffect } from "react";
-import { I18nextProvider, initReactI18next } from "react-i18next";
+import { I18nextProvider } from "react-i18next";
 import { Locale } from "@/i18n-config";
 import i18next from "i18next";
-import en from "../../locales/en.json";
-import ja from "../../locales/ja.json";
 
 export function I18nProvider({
   children,
@@ -362,22 +383,21 @@ export function I18nProvider({
 
 ```
 
-Then, add the provider to the main layout.tsx of your project.
+Then, add the provider to the main `layout.tsx` of your project.
 
 ```tsx
   const { lang } = await params;
-  const currentLang = lang as Locale;
   return (
     <html lang={lang} className={notoSansJp.variable}>
       <body> 
-        <I18nProvider lang={currentLang}>{children}</I18nProvider>
+        <I18nProvider lang={lang}>{children}</I18nProvider>
       </body>
     </html>
   );
 ```
 
 ```LastVisitNotice.tsx``` is a client component, so it is the perfect use case to test our provider.
-I'm replacing our hardcoded string ```※表示される日付はいつも今日の日付です（デモ用のローカル表示）``` with ```{t("lastVisit.dateWarning")}``` and then adding ```lastVisit.dateWarning``` to the json files.
+I'm replacing our hardcoded string ```※日付はこのブラウザに保存した前回アクセス時刻です（デモ用のローカル表示）``` with ```{t("lastVisit.dateWarning")}``` and then adding ```lastVisit.dateWarning``` to the json files.
 
 en.json
 ```
@@ -388,6 +408,17 @@ en.json
   }
 }
 ```
+
+ja.json
+```
+{
+  "slogan": "日本各地の売買・賃貸をワンストップでサポートします",
+  "lastVisit": {
+    "dateWarning": "※日付はこのブラウザに保存した前回アクセス時刻です（デモ用のローカル表示）"
+  }
+}
+```
+
 
 In ```LastVisitNotice.tsx```, don't forget to load the translations:
 ```tsx
@@ -450,7 +481,7 @@ There is more than one way to handle this. One possibility is to use template st
 You will also notice I changed ```function formatVisitDate()``` to accept a locale parameter.
 I also moved the function inside the component so we can access the ```t()``` and added a correspondent string to "不明な日時" in the json files.
 ```ts
-function formatVisitDate(locale: string) {
+function formatVisitDate() {
   const d = new Date();
   if (Number.isNaN(d.getTime())) return t("unknownDate");
   return new Intl.DateTimeFormat(locale, {
@@ -484,7 +515,7 @@ Go ahead and replace the paragraph with the code below:
 <Trans
   i18nKey="lastVisit.mainText"
   values={{
-    date: formatVisitDate(locale),
+    date: formatVisitDate(),
     count: NEW_LISTING_COUNT,
   }}
 />
