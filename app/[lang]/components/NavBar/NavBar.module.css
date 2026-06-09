@@ -117,7 +117,7 @@ li .active::after {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  align-items: anchor-center;
+  align-items: center;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
@@ -151,7 +151,7 @@ li .active::after {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  align-items: anchor-center;
+  align-items: center;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
