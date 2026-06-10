@@ -2,10 +2,10 @@ import { i18n, Locale, hasLocale } from "@/i18n-config";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
-import { getBlogPostList, loadBlogPost } from "../../helpers/file-helpers";
-import COMPONENT_MAP from "../../helpers/mdx-components";
+import { getBlogPostList, loadBlogPost } from "@/app/helpers/file-helpers";
+import COMPONENT_MAP from "@/app/helpers/mdx-components";
 
-import BlogHero from "../../components/BlogHero/BlogHero";
+import BlogHero from "@/app/components/BlogHero/BlogHero";
 
 import styles from "./blogSlug.module.css";
 

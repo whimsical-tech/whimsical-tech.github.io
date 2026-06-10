@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/dictionaries";
 import { Locale, hasLocale } from "@/i18n-config";
-import { getBlogPostList } from "../helpers/file-helpers";
-import BlogSummary from "../components/BlogSummary/BlogSummary";
+import { getBlogPostList } from "@/app/helpers/file-helpers";
+import BlogSummary from "@/app/components/BlogSummary/BlogSummary";
 
 import styles from "./blogpage.module.css";
 

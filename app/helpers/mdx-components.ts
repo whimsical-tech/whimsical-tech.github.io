@@ -1,4 +1,4 @@
-import CodeSnippet from "../components/CodeSnippet/CodeSnippet";
+import CodeSnippet from "@/app/components/CodeSnippet/CodeSnippet";
 
 const COMPONENT_MAP = {
   pre: CodeSnippet,

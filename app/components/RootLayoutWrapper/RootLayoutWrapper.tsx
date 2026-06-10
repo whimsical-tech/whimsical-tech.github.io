@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import { ThemeProvider } from "../ThemeProvider/ThemeProvider";
-import { I18nProvider } from "../../../I18nProvider";
+import { I18nProvider } from "../../I18nProvider";
 import NavBar from "../NavBar/NavBar";
 import { Locale } from "@/i18n-config";
 

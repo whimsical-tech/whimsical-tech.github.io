@@ -1,7 +1,7 @@
-import AboutMe from "./components/AboutMe/AboutMe";
-import Contact from "./components/Contact/Contact";
-import Skills from "./components/Skills/Skills";
-import Timeline from "./components/Timeline/Timeline";
+import AboutMe from "../components/AboutMe/AboutMe";
+import Contact from "../components/Contact/Contact";
+import Skills from "../components/Skills/Skills";
+import Timeline from "../components/Timeline/Timeline";
 import { Locale } from "@/i18n-config";
 
 export default async function Home({
