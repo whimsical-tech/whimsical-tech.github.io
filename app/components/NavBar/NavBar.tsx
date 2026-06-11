@@ -116,10 +116,13 @@ export default function NavBar() {
     const target = document.getElementById(id);
     if (pathname === getHomepagePath()) {
       if (target) {
-        target.scrollIntoView({
+        const navbarHeight = document.querySelector("nav")?.offsetHeight || 0;
+        const elementPosition =
+          target.getBoundingClientRect().top + window.pageYOffset;
+
+        window.scrollTo({
+          top: elementPosition - navbarHeight,
           behavior: "smooth",
-          block: "start",
-          inline: "nearest",
         });
       }
     } else {
