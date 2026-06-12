@@ -24,6 +24,8 @@
   "navbar.blog": "Blog",
   "navbar.darkMode": "Dark",
   "navbar.lightMode": "Light",
+  "navbar.open": "Open menu",
+  "navbar.close": "Close menu",
   "blog.latest": "Latest Content",
   "blog.continue": "Continue reading",
   "blog.publishedOn": "Published on",

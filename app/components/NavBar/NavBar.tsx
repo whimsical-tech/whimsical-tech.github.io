@@ -183,7 +183,7 @@ export default function NavBar() {
           <button
             className={styles.hamburger}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"} //TODO: add translation
+            aria-label={isMenuOpen ? t("navbar.close") : t("navbar.open")}
           >
             {isMenuOpen ? <HiX /> : <HiMenu />}
           </button>

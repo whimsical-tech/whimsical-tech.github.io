@@ -24,6 +24,8 @@
   "navbar.blog": "ブログ",
   "navbar.darkMode": "ダーク",
   "navbar.lightMode": "ライト",
+  "navbar.open": "メニューを開く",
+  "navbar.close": "メニューを閉じる",
   "blog.latest": "最新の記事",
   "blog.continue": "記事を読む",
   "blog.publishedOn": "公開日：",
