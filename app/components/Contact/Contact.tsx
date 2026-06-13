@@ -1,6 +1,11 @@
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/dictionaries";
 import { Locale, hasLocale } from "@/i18n-config";
+import { MdBeachAccess } from "react-icons/md";
+import { IoIosMail } from "react-icons/io";
+
+import { FaLinkedin } from "react-icons/fa";
+
 import Image from "next/image";
 import styles from "./Contact.module.css";
 
@@ -16,19 +21,29 @@ export default async function Contact({
   const t = await getDictionary(lang);
   return (
     <footer id="contact" className={styles.contact}>
-      <p className={styles.mailLink}>
-        {t.contact}{" "}
-        <a href="mailto:whimsicaltech+portfolio@proton.me">
-          {" "}
-          whimsicaltech+portfolio@proton.me
-        </a>
+      <p className={styles.heading}>
+        <MdBeachAccess width={40} height={40} />
+        {t.contact}
       </p>
-      <a href="https://qiita.com/frontendpro" target="_blank" rel="noreferrer">
-        <Image src="/qiita.png" alt="Qiita" width={40} height={40} />
-      </a>
-      <a href="https://qiita.com/frontendpro" target="_blank" rel="noreferrer">
-        <Image src="/in.png" alt="LinkedIn" width={40} height={40} />
-      </a>
+      <div className={styles.icons}>
+        <a href="mailto:whimsicaltech+portfolio@proton.me">
+          <IoIosMail />
+        </a>
+        <a
+          href="https://qiita.com/frontendpro"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Image src="/qiita.png" alt="Qiita" width={40} height={40} />
+        </a>
+        <a
+          href="https://www.linkedin.com/in/acsfrontend/?locale=en"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FaLinkedin color="#0a66c2" />
+        </a>
+      </div>
     </footer>
   );
 }
