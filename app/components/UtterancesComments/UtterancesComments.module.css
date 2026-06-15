@@ -1,4 +1,4 @@
-#utterances-comments .utterances {
+.comments > div {
   max-width: var(--content-width);
   margin-left: -10px; /* although the div is naturally aligned, the negative margin makes it look more aligned due to negative space around the avatar*/
 }

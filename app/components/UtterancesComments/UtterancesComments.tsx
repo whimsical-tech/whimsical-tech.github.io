@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useTheme } from "@/app/components/ThemeProvider/ThemeProvider";
-import "./UtterancesComments.module.css";
+import styles from "./UtterancesComments.module.css";
 
 interface UtterancesCommentsProps {
   repo: string;
@@ -14,14 +13,17 @@ const THEME_MAP = {
 } as const;
 
 export default function UtterancesComments({ repo }: UtterancesCommentsProps) {
-  const { theme } = useTheme();
-  const utterancesTheme =
-    (THEME_MAP[theme] ?? process.env.NEXT_PUBLIC_UTTERANCES_THEME) ||
-    "github-light";
-
   useEffect(() => {
     const container = document.getElementById("utterances-comments");
     if (!container || !repo) return;
+    if (container.hasChildNodes()) return;
+
+    const currentTheme =
+      document.documentElement.getAttribute("data-theme") || "light";
+    const utterancesTheme =
+      THEME_MAP[currentTheme as keyof typeof THEME_MAP] ||
+      process.env.NEXT_PUBLIC_UTTERANCES_THEME ||
+      "github-light";
 
     const script = document.createElement("script");
     script.src = "https://utteranc.es/client.js";
@@ -32,13 +34,7 @@ export default function UtterancesComments({ repo }: UtterancesCommentsProps) {
     script.setAttribute("crossorigin", "anonymous");
 
     container.appendChild(script);
+  }, [repo]);
 
-    return () => {
-      while (container.firstChild) {
-        container.removeChild(container.firstChild);
-      }
-    };
-  }, [repo, utterancesTheme]);
-
-  return <div id="utterances-comments" />;
+  return <div id="utterances-comments" className={styles.comments} />;
 }
