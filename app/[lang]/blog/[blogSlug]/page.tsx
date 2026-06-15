@@ -6,7 +6,7 @@ import { getBlogPostList, loadBlogPost } from "@/app/helpers/file-helpers";
 import COMPONENT_MAP from "@/app/helpers/mdx-components";
 
 import BlogHero from "@/app/components/BlogHero/BlogHero";
-import DisqusComments from "@/app/components/DisqusComments/DisqusComments";
+import UtterancesComments from "@/app/components/UtterancesComments/UtterancesComments";
 
 import styles from "./blogSlug.module.css";
 
@@ -82,7 +82,9 @@ async function BlogPost({
       />
       <div className={styles.page}>
         <MDXRemote source={content} components={COMPONENT_MAP} />
-        <DisqusComments blogSlug={blogSlug} title={frontmatter.title} />
+        <UtterancesComments
+          repo={process.env.NEXT_PUBLIC_UTTERANCES_REPO || ""}
+        />
       </div>
     </article>
   );
