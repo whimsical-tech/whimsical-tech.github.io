@@ -1,6 +1,33 @@
 .contact {
   padding: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
-.mailLink {
-  text-align: center;
+.contact .heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25em;
+}
+.heading svg {
+  width: 30px;
+  height: 30px;
+}
+.icons {
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+}
+.icons svg {
+  width: 40px;
+  height: 40px;
+}
+.icons a {
+  padding: 0.4rem 0.3rem 0.1rem;
+}
+.contact a:hover {
+  background-color: var(--foreground);
+  color: var(--bright-orange);
 }

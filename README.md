@@ -1,11 +1,10 @@
 This is my whimsical portfolio, a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Todo's
+## Todo's (this section is deprecated: using Jira to track tasks)
 
-High priority:
+~~High priority:
 
 - More fun animations and fun stuff in general (e.g. toggable music, sound effects, etc)
-- Replace current "contact" section with "about me". maybe remove timeline?
 - Basic accessibility tests were fine but i need to test for more specific cases (e.g. 400% zoom)
 
 Mid priority:
@@ -14,7 +13,7 @@ Mid priority:
 
 Low priority:
 
-- Multi-language support: English and Japanese are the most important and already implemented, I'd like to add Portuguese and German next
+- Multi-language support: English and Japanese are the most important and already implemented, I'd like to add Portuguese and German next~~
 
 ## Getting Started
 
