@@ -93,7 +93,7 @@ Directly under the app folder, create a folder called [lang].
 The brackets are important, they specify lang is a dynamic parameter.
 Inside [lang] you should have all of your pages so, move them there.
 
-![This is how the directory currently looks like](../../directory.png "This is how the directory currently looks like")
+![This is how the directory currently looks like](../../blog/directory.png "This is how the directory currently looks like")
 
 Right now your app is only accessible if you manually add a parameter in the url.
 To fix this, let's create a `proxy.ts` file in the same level as your app folder.
@@ -267,7 +267,7 @@ export default function LanguageSwitcher() {
 
 For our example repository, I am importing this component in the `SiteHeader.tsx`, right after the last ```<Link>```.
 
-![LanguageSwitcher implemented in UI](../../languageSwitcher.png "LanguageSwitcher implemented in UI")
+![LanguageSwitcher implemented in UI](../../blog/languageSwitcher.png "LanguageSwitcher implemented in UI")
 
 Go ahead and try your new LanguageSwitcher, and you should be able to see the url changing.
 
@@ -434,14 +434,14 @@ import { useTranslation } from "react-i18next";
 A Flash of Untranslated Content (FOUC) can occur when translations are loaded on the client-side.
 This is bad UX.
 
-![If you remove the loading state from LastVisitNotice, you will see this bad example of UI when loading the page.](../../badUi.png "If you remove the loading state from LastVisitNotice, you will see this bad example of UI when loading the page.")
+![If you remove the loading state from LastVisitNotice, you will see this bad example of UI when loading the page.](../../blog/badUi.png "If you remove the loading state from LastVisitNotice, you will see this bad example of UI when loading the page.")
 _Even though this page is supposed to show in English, Japanese text may show for a second when loading._
 
 <br/>
 
 To prevent it, implement a loading state while the locale is being resolved. You can see a demonstration in `LastVisitNotice.tsx`.
 
-![With the loading state, you see a skeleton of the component instead, and afterwards the expected strings.](../../loading.png "")
+![With the loading state, you see a skeleton of the component instead, and afterwards the expected strings.](../../blog/loading.png "")
 _With the loading state, you see a skeleton of the component instead, and afterwards the expected strings._
 
 <br/>

@@ -34,7 +34,7 @@ export default async function Contact({
           target="_blank"
           rel="noreferrer"
         >
-          <Image src="/qiita.png" alt="Qiita" width={36} height={36} />
+          <Image src="/images/qiita.png" alt="Qiita" width={36} height={36} />
         </a>
         <a
           href="https://www.linkedin.com/in/acsfrontend/?locale=en"
