@@ -26,13 +26,14 @@ export default async function Contact({
         {t.contact}
       </p>
       <div className={styles.icons}>
-        <a href="mailto:whimsicaltech+portfolio@proton.me">
+        <a href="mailto:whimsicaltech+portfolio@proton.me" aria-label="Email">
           <IoIosMail />
         </a>
         <a
           href="https://qiita.com/frontendpro"
           target="_blank"
           rel="noreferrer"
+          aria-label="Qiita"
         >
           <Image src="/images/qiita.png" alt="Qiita" width={36} height={36} />
         </a>
@@ -40,6 +41,7 @@ export default async function Contact({
           href="https://www.linkedin.com/in/acsfrontend/?locale=en"
           target="_blank"
           rel="noreferrer"
+          aria-label="LinkedIn"
         >
           <FaLinkedin color="#0a66c2" />
         </a>
